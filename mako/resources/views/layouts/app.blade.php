@@ -24,7 +24,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name','Laravel') }}
+                    Moka
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -49,21 +49,14 @@
                                 </li>
                             @endif
                         @else
-                            @role('customer')
-                                <li><a href="customer" class="nav-link">Customer's Panel</a></li>
-                            @endrole
                             @role('admin')
-                                <li><a href="admin_dashboard" class="nav-link">Admin's Panel</a></li>
-                            @endrole
-                            @can('add_product')
-                                <li><a href="addproduct" class="nav-link">Add Products</a></li>
-                            @endcan()
-                            @can('remove_product')
-                                <li><a href="#" class="nav-link">Remove Products</a></li>
-                            @endcan()
+                                <li><a href="{{ route('admin.admin_dashboard.index') }}" class="nav-link">Admin Dashboard</a></li>
+                            @endrole 
+
                             @can('view_product')
-                                <li><a href="#" class="nav-link">View Products</a></li>
+                                <li><a href="{{ route('admin.addproduct.index') }}" class="nav-link">Products</a></li>
                             @endcan()
+                            
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->user_firstname }} <span class="caret"></span>

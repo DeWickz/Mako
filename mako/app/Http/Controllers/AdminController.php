@@ -13,5 +13,5 @@ class AdminController extends Controller
         $users = User::all();
         return view('adminhome',compact('users'));
     }
-    
+
 }

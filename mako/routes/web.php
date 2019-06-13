@@ -16,7 +16,24 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-Route::resource('addproduct', 'ProductController');
+
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/customer', 'HomeController@index');
-Route::get('/admin_dashboard', 'AdminController@index');
+
+Route::get('/products', function(){
+    return view('viewproduct');
+});
+Route::get('/admin/adding', function(){
+    return view('addproduct');
+});
+Route::get('/admin/removing', function(){
+    return view('removeproduct');
+});
+
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function(){
+Route::resource('addproduct1', 'ProductController@test');
+Route::resource('addproduct', 'ProductController');
+Route::resource('admin_dashboard', 'AdminController');
+});
+
+

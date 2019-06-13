@@ -1,25 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="row">
-    <div class="col-md-12">
-        <br />
-        <h3 align="center">All Users</h3>
-        <br />
-        <table class="table table-bordered">
-            <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-            </tr>
-            @foreach($users as $row)
-            <tr>
-                <td>{{$row['user_firstname']}}</td>
-                <td>{{$row['last_firstname']}}</td>
-                <td>{{$row['email']}}</td>
-            </tr>
-            @endforeach
-        </table>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-3">
+            <img src="https://static-cdn.jtvnw.net/emoticons/v1/669528/3.0" alt="">
+        </div>
+        <div class="col-9">
+            <h3>Admin Dashboard</h3>
+        </div>
     </div>
 </div>
 @endsection
