@@ -30,20 +30,14 @@
           <td>{{ $product->product_brand }}</td>
           <td>{{ $product->product_group }}</td>
           <td>
-          @role('admin')
-          <a href="{{ Route('admin.addproduct.edit', auth()->$product->product_id) }}" class="btn btn-info">Edit</a>
-
-
-
-          <button class="delete-modal btn btn-danger"
-            data-info="{$product->product_id}},{{$product->product_name}},{{$product->product_code}},{{$product->product_price}},
-                       {{$product->product_detail}},{{$product->product_createdBy}},{{$product->product_brand}},{{$product->product_group}}">
-            <span class="glyphicon glyphicon-trash"></span> Delete
-          </button>
+          <a href="{{ Route('admin.addproduct.edit', $product->product_id) }}" class="btn btn-info">Edit</a>        
+          <form method="POST" action="{{ route('admin.addproduct.destroy',$product->product_id) }}">
+            @csrf
+            {{ method_field('DELETE') }}
+            <input type="submit" value="Delete" onclick="return confirm('Are you sure?')" class="btn btn-danger"/>
+          </form>
           </td>
-          @endrole
-          
-      </form>
+
       </tr>
     @endforeach
     </tbody>
@@ -51,7 +45,7 @@
 <div class="row-2">
     <div class="col-2 pr-1">
       @role('admin')
-        <li><a href="/admin/adding" class="nav-link btn btn-primary">Add product</a></li>
+        <li><a href="{{ route('admin.addproduct.create') }}" class="nav-link btn btn-primary">Add product</a></li>
       @endrole
 
       

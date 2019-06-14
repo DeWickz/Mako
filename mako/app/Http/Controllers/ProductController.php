@@ -1,42 +1,43 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Controller;
 
 class ProductController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        //$test = "Add products";
-        //dd($test);
         $products = Product::all();
         return view('viewproduct',compact('products'));
     }
 
-    public function test()
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
     {
         return view('addproduct');
     }
 
-
-    public function edit(Product $s)
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
     {
-        return view('proedit',compact('s'));
-    }
-
-
-    public function update(Request $request,Product $s)
-    {
-      $s->update($request->all());
-      return redirect()->route('admin.addproduct.index');
-    }
-
-
-
-    public function store()
-    {
+    
         $product = request()->validate([
             'product_name' => ['required', 'string', 'max:255'],
             'product_code' => ['required', 'integer',],
@@ -51,40 +52,52 @@ class ProductController extends Controller
         return view('adminhome');
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Product  $product
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Product $product)
+    {
+        //
+    }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Product  $product
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Product $products)
+    {
+        //dd($products);
+        return view('proedit',compact('products'));
+        
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Product  $product
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Product $product)
+    {
+        $product->update($request->all());
+        return redirect()->route('admin.addproduct.index');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Product  $product
+     * @return \Illuminate\Http\Response
+     */
     public function destroy(Product $product)
     {
         $product->delete();
-      return redirect()->route('products');
+        return redirect()->route('admin.addproduct.index');
     }
-
-
-
-
-
-
-
-
-
-
-    // public function store(Request $request)
-    // {
-    //     Product::create($request->all());
-    //     return redirect()->route('addproduct.index'); // บัตเก้บข้อมูล
-    // }
-
-    // protected function validator(array $data)
-    // {
-    //     return Validator::make($data, [
-    //         'product_name' => ['required', 'string', 'max:255'],
-    //         'product_code' => ['required', 'string', 'max:255'],
-    //         'product_price' => ['required', 'integer', 'max:255'],
-    //         'product_detail' => ['required', 'string', 'max:255'],
-    //         'product_createdBy' => ['required', 'string', 'max:255'],
-    //         'product_brand' => ['required', 'string', 'max:255'],
-    //         'product_group' => ['required', 'string', 'max:255'],
-    //     ]);
-    // }
-    
-    
 }

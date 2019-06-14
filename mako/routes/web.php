@@ -20,20 +20,25 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/customer', 'HomeController@index');
 
-Route::get('/products', function(){
-    return view('viewproduct');
-});
-Route::get('/admin/adding', function(){
-    return view('addproduct');
-});
-Route::get('/admin/removing', function(){
-    return view('removeproduct');
-});
+// Route::get('/products', function(){
+//     return view('viewproduct');
+// });
+// Route::get('/admin/adding', function(){
+//     return view('addproduct');
+// });
+// Route::get('/admin/removing', function(){
+//     return view('removeproduct');
+// });
+
 
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function(){
-Route::resource('addproduct1', 'ProductController@test');
-Route::resource('addproduct', 'ProductController');
-Route::resource('admin_dashboard', 'AdminController');
+    Route::resource('addproduct', 'ProductController');
+    Route::post('addproduct/add' ,'ProductController@create' );
+    Route::put('addproduct/{id}/edit' ,'ProductController@edit' );
+    Route::resource('admin_dashboard', 'HomeController');
+    Route::resource('product', 'ProductController');
+    Route::resource('orders', 'OrderController');
 });
+
 
 

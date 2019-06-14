@@ -23,10 +23,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        auth()->user()->assignRole('customer');
+        auth()->user()->assignRole('admin');
         if(auth()->user()->hasRole('admin'))
         {
-            auth()->user()->syncPermissions(['manageuser','add_product','remove_product','edit_product','view_product']);
+            auth()->user()->syncPermissions(['add_product','delete_product','edit_product','view_product']);
             return view('adminhome');
         }
         else
