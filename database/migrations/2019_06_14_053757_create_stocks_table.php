@@ -14,8 +14,9 @@ class CreateStocksTable extends Migration
     public function up()
     {
         Schema::create('stocks', function (Blueprint $table) {
-            $table->bigIncrements('stock_id');
+            $table->bigIncrements('id');
             $table->string('stock_product_id');
+            $table->string('stock_amount');
             $table->string('stock_sn');
             $table->string('stock_in');
             $table->string('stock_out');

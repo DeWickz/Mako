@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Group;
+use App\Product;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -27,7 +28,7 @@ class GroupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($product_id = null)
     {
         return view('admin.groups.create');
     }
@@ -42,9 +43,16 @@ class GroupController extends Controller
     {
         $group = request()->validate([
             'group_name' => ['required', 'string', 'max:255'],
+            'group_product_id' => ['required', 'string', 'max:255'],
+            'product_id' => ['required', 'string', 'max:255'],
         ]);
 
-        \App\Group::create($request->all());
+        $gro = new Group;
+        $gro->group_name = $request->input('group_name');
+        $gro->group_product_id = $request->input('group_product_id');
+        $gro->product_id = $request->input('product_id');
+
+        $gro->save();
         return  redirect()->route('admin.groups.index');
 
     }
@@ -81,7 +89,7 @@ class GroupController extends Controller
     public function update(Request $request, Group $group)
     {
         $group->update($request->all());
-        Alert::success('Success Title', 'Success Message');
+        Alert::success('Successfully updated', 'Group name updated');
         return redirect()->route('admin.groups.index');
     }
 

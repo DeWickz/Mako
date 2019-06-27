@@ -1,7 +1,7 @@
 <?php
- 
+
 namespace App\Http\Controllers;
- 
+
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -15,10 +15,10 @@ class ImageController extends Controller
 	* Generate Image upload view page
 	*/
     public function index(){
-    	return view('imageUpload');
+    	return view('admin/products/dropzone');
     }
- 
- 
+
+
     /**
     * Upload Image file to folder
     */
@@ -31,11 +31,11 @@ class ImageController extends Controller
     		$imageFile->move(public_path('uploads'), $imageName);
     	}
 		return response()->json(['Status'=>true, 'Message'=>'Image(s) Uploaded.']);
-		
+
 		//save file name + file id into database
-		
+
     }
 }
- 
+
 
 

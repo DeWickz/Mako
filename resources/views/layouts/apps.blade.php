@@ -63,6 +63,13 @@
             </a>
           </li>
 
+          <li class="nav-item ">
+            <a class="nav-link" href="{{ route('admin.stocks.index') }}">
+              <i class="material-icons">storage</i>
+              <p>Stocks</p>
+            </a>
+          </li>
+
       </div>
     </div>
     <div class="main-panel">
@@ -153,6 +160,7 @@
 
 
   <!--   Core JS Files   -->
+  <script src="\assets\js\core\dropzone.js"></script>
   <script src="\assets\js\core\jquery.min.js"></script>
   <script src="\assets\js\core\popper.min.js"></script>
   <script src="\assets\js\core\bootstrap-material-design.min.js"></script>

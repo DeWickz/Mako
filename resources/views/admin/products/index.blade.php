@@ -19,7 +19,7 @@
 
 <br>
 
-<table class="table table-bordered">
+<table class="table">
     <thead>
         <tr>
           <th>ID</th>
@@ -45,16 +45,23 @@
           <td>{{ $product->product_createdBy }}</td>
           <td>{{ $product->product_brand }}</td>
           <td>{{ $product->product_group }}</td>
+          <td>{{ $product->group_id}}</td>
           <td>
           @role('admin')
           <a href="{{ Route('admin.products.edit', $product->id) }}" class="btn btn-info">Edit</a>
           <form method="POST" action="{{ route('admin.products.destroy',$product->id) }}">
             @csrf
             {{ method_field('DELETE') }}
-
             <input type="submit" value="Delete" onclick="return confirm('Are you sure?')" class="btn btn-danger"/>
           </form>
           @endrole
+          {{-- @role('customer') --}}
+
+          <form method="POST" action="{{ route('admin.cart.store',$product->id) }}">
+            <input type="submit" value="Bug" onclick="return confirm('BUGSSSS')" class="btn btn-facebook"/>
+          </form>
+
+          {{-- @endrole --}}
           </td>
 
       </tr>

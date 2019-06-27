@@ -19,18 +19,19 @@
                         Order name:
 
                         <input type="text" name="order_name" class="form-control"/>
-
+                        <br>
                         Order code:
 
                         <input type="text" name="order_code" class="form-control"/>
-
+                        <br>
                         Order date:
 
                         <input type="date" name="order_date" class="form-control"/>
-
+                        <br>
                         Order user ID:
 
                         <input type="text" name="order_user_id" class="form-control"/>
+                        <br>
                         {{-- <input type="text" name="order_user_id" value="{{$user->id}}" class="form-control"/> --}}
 
                         Order PaymentMethod:
@@ -40,7 +41,7 @@
                         <br/>
                         <br/>
 
-                        <input type="submit" value="Save" class="btn btn-sm btn-primary">
+                        <input type="submit" value="Save" class="btn btn-primary">
 
                     </form>
                 </div>

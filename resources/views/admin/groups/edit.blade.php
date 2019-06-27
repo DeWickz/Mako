@@ -18,7 +18,7 @@
                     <input type="text" name="group_name" value="{{ $group->group_name }}" class="form-control" />
 
 
-                    <input type="submit" value="Save" />
+                    <input type="submit" value="Save" class="btn btn-primary" />
                   </form>
                 </div>
               </div>

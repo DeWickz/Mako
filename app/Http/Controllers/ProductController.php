@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 use App\Product;
+use App\Group;
+use App\Cart;
+use DB;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Gloudemans\Shoppingcart\Contracts\Buyable;
 
 
 class ProductController extends Controller
@@ -17,7 +22,6 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-
         return view('admin.products.index',compact('products'));
     }
 
@@ -26,7 +30,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($group_id = null)
     {
         return view('admin.products.create');
     }
@@ -39,6 +43,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request);
 
         $product = request()->validate([
             'product_name' => ['required', 'string', 'max:255'],
@@ -50,9 +55,39 @@ class ProductController extends Controller
             'product_group' => ['required', 'string', 'max:255'],
             'product_warranty' => ['required', 'string', 'max:255'],
             'product_model' => ['required', 'string', 'max:255'],
+            'product_images' => ['required', 'string', 'max:255'],
+            'group_id' => ['required', 'integer',],
         ]);
 
-        \App\Product::create($product);
+        $pro = new Product;
+        $pro->product_name = $request->input('product_name');
+        $pro->product_code = $request->input('product_code');
+        $pro->product_price = $request->input('product_price');
+        $pro->product_detail = $request->input('product_detail');
+        $pro->product_createdBy = $request->input('product_createdBy');
+        $pro->product_brand  = $request->input('product_brand');
+        $pro->product_group = $request->input('product_group');
+        $pro->product_warranty = $request->input('product_warranty');
+        $pro->product_model = $request->input('product_model');
+        $pro->product_images = $request->input('product_images');
+        $pro->group_id = $request->input('group_id');
+        //$pro->product_images = $fileNameToStroe;
+
+        // $pro->save();
+
+        //if($request->hasFile('product_images')){
+        //    $filenameWithExt = $request->file('product_images')->getClientOriginalName();
+
+        //    $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+
+         //   $extension = $request->file('product_images')->getClientOriginalExtension();
+
+         //   $fileNameToStroe = $filename.'_'.time().'.'.$extension;
+
+          //  $path = $request->file('product_images')->storeAs('public/product_images',$fileNameToStroe);
+
+         // }
+
         return  redirect()->route('admin.products.index');
     }
 
@@ -62,9 +97,15 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show(Request $request)
     {
-        //
+        $pro = Product::all()
+            ->where('group_id','=', 1);
+        //dd($pro);
+        //เอาข้อมูลออกไม่ได้ท่าใช้ request
+        return view('admin.products.view',compact('pro'));
+
+
     }
 
     /**
@@ -81,6 +122,12 @@ class ProductController extends Controller
 
     }
 
+    public function view()
+    {
+        $products = Product::all();
+        return view('admin.products.view',compact('products'));
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -91,7 +138,9 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $product->update($request->all());
-        Alert::success('Success Title', 'Success Message');
+        // Alert::success('Successfully updated', 'Product info updated');
+        Alert::image('Successfully updated', 'Product info updated', 'https://backgroundcheckall.com/wp-content/uploads/2018/10/pepehands-transparent-background-3-300x200.png',
+                     '300', '600');
         return redirect()->route('admin.products.index');
     }
 
@@ -124,6 +173,19 @@ class ProductController extends Controller
 		return response()->json(['Status'=>true, 'Message'=>'Image(s) Uploaded.']);
 
 		//save file name + file id into database
-        #####dropzone still bugged in products.create######
+
     }
 }
+
+        //if($request->hasFile('product_images')){
+        //    $filenameWithExt = $request->file('product_images')->getClientOriginalName();
+
+        //    $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+
+         //   $extension = $request->file('product_images')->getClientOriginalExtension();
+
+         //   $fileNameToStroe = $filename.'_'.time().'.'.$extension;
+
+          //  $path = $request->file('product_images')->storeAs('public/product_images',$fileNameToStroe);
+
+         // }

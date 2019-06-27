@@ -12,7 +12,7 @@
     <div class="col-2 pr-1">
 	@role('admin')
         <a href="{{ Route('admin.orders.create') }}"class="nav-link btn btn-success">ADD Order</a>
-		 @endrole
+	@endrole
     </div>
 </div>
 
@@ -25,18 +25,23 @@
           <th>Name</th>
           <th>Code</th>
           <th>Date</th>
+          <th>user_id</th>
+          <th>PaymentMethod</th>
 
           @role('admin')
           <th width = 200>Action</th>
           @endrole
         </tr>
     </thead>
+
     @forelse($orders as $order)
         <tr>
           <td>{{ $order->id }}</td>
           <td>{{ $order->order_name }}</td>
           <td>{{ $order->order_code}}</td>
           <td>{{ $order->order_date }}</td>
+          <td>{{ $order->order_user_id}}</td>
+          <td>{{ $order->order_PaymentMethod}}</td>
 
           <td>
           @role('admin')

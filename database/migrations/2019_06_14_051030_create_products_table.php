@@ -15,6 +15,7 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedInteger('group_id');
             $table->string('product_name');
             $table->string('product_code');
             $table->float('product_price');
@@ -24,6 +25,7 @@ class CreateProductsTable extends Migration
             $table->string('product_group');
             $table->string('product_warranty');
             $table->string('product_model');
+            $table->string('product_images');
             $table->timestamps();
         });
     }
