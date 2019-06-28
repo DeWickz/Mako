@@ -26,13 +26,13 @@ class HomeController extends Controller
         auth()->user()->assignRole('admin');
         if(auth()->user()->hasRole('admin'))
         {
-            auth()->user()->syncPermissions(['add_product','delete_product','edit_product','view_product']);
+            auth()->user()->syncPermissions(['add_product','delete_product','edit_product','view_product','view_order']);
             return view('adminhome');
         }
         else
         {
             auth()->user()->givePermissionTo('view_product');
-            return view('customerhome');
+            return view('home');
         }
 
         // auth()->user()->removeRole('customer');

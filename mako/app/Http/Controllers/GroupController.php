@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Group;
+use App\Product;
+use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
 
 class GroupController extends Controller
 {
@@ -14,17 +18,19 @@ class GroupController extends Controller
      */
     public function index()
     {
-        //
+        $groups = Group::all();
+        return view('admin.groups.index', compact('groups'));
     }
+
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($product_id = null)
     {
-        //
+        return view('admin.groups.create');
     }
 
     /**
@@ -35,7 +41,20 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $group = request()->validate([
+            'group_name' => ['required', 'string', 'max:255'],
+            'group_product_id' => ['required', 'string', 'max:255'],
+            'product_id' => ['required', 'string', 'max:255'],
+        ]);
+
+        $gro = new Group;
+        $gro->group_name = $request->input('group_name');
+        $gro->group_product_id = $request->input('group_product_id');
+        $gro->product_id = $request->input('product_id');
+
+        $gro->save();
+        return  redirect()->route('admin.groups.index');
+
     }
 
     /**
@@ -57,7 +76,7 @@ class GroupController extends Controller
      */
     public function edit(Group $group)
     {
-        //
+        return view('admin.groups.edit', compact('group'));
     }
 
     /**
@@ -69,7 +88,9 @@ class GroupController extends Controller
      */
     public function update(Request $request, Group $group)
     {
-        //
+        $group->update($request->all());
+        Alert::success('Successfully updated', 'Group name updated');
+        return redirect()->route('admin.groups.index');
     }
 
     /**
@@ -80,6 +101,7 @@ class GroupController extends Controller
      */
     public function destroy(Group $group)
     {
-        //
+        $group->delete();
+        return redirect()->route('admin.groups.index');
     }
 }

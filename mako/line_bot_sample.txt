@@ -1,0 +1,542 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+
+
+use Illuminate\Support\Facades\File;
+
+use Illuminate\Support\Facades\Validator;
+
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Model;
+
+use App\User;
+use app\slip;
+use App\order;
+use DB;
+
+use App\Exports\OrdersToDayExport;
+use App\Exports\OrdersThreeDayExport;
+use App\Exports\OrdersFiveDayExport;
+use App\Exports\UsersExport;
+use App\Exports\OrdersLastMonthExport;
+use App\Exports\OrdersExport;
+use App\Exports\OrdersAllYearExport;
+
+
+
+
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+
+use Alert;
+use Redirect;
+
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Traits\HasRoles;
+use App\linewebhook;
+use Log;
+class adminController extends Controller
+{
+    use Exportable;
+    private $excel;
+    use HasRoles;
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function __construct(Excel $excel)
+    {
+        $this->excel = $excel;
+    }
+
+    public function index()
+    {
+        if(auth()->user()->hasRole("admin")){
+
+    $user = DB::table('users')
+      ->where('user_citizenpic', '!=' ,'citizen.jpg')
+      ->where('user_isApprove','=','0')
+      ->get();
+
+        return view('admin_1.index', compact('user'));
+    }else
+            {
+
+                return view('errors');
+             }
+    }
+
+    public function showorders(){
+        if(auth()->user()->hasRole("admin")){
+
+            $orders = DB::table('orders')->latest('orders.id')
+            ->join('users', 'orders.order_user_id', '=', 'users.id')
+            ->paginate(10);
+
+
+
+
+        return view('admin_1.orders',compact('orders'));
+
+
+    }else
+            {
+
+                return view('errors');
+             }
+
+    }
+
+    public function updateApprove(Request $request, $id){
+
+        if(auth()->user()->hasRole("admin")){
+
+        $user = User::find($id);
+        $user->user_isapprove = $request->get('user_isapprove_button');
+        $user->save();
+
+        return back()->with('success','You have successfully update ');
+
+
+
+         }else
+         {
+
+          return view('errors');
+          }
+
+    }
+
+    public function updateOrder( Request $request ,$id){
+
+        if(auth()->user()->hasRole("admin")){
+
+        $orders = DB::table('orders')
+        ->where('id','=',$id)
+        ->join('slips', 'orders.id', '=', 'slips.slip_orders_id')
+        ->get();
+
+        $noslip = DB::table('orders')
+        ->where('id','=',$id)
+        ->get();
+
+
+        return view('admin_1.check' ,compact('orders','noslip')) ;
+
+         }else
+         {
+
+         return view('errors');
+            }
+
+    }
+    public function updateOrderStatus(Request $request, $id){
+
+        if(auth()->user()->hasRole("admin")){
+        $order = Order::find($id);
+        $order->order_appove = $request->get('data_update');
+
+        $order->save();
+
+        $success = ['status' => 'You have successfully update ', 'url' => route('showorders')];
+        return json_encode($success);
+     }else
+             {
+
+             return view('errors');
+              }
+
+    }
+
+
+    public function dashboard()
+    {
+
+        $now = \Carbon\Carbon::now();
+
+        $date_today = \Carbon\Carbon::today()->startOfDay();
+        $date_threeday = \Carbon\Carbon::now()->subDays(4);
+        $date_threeday_end = \Carbon\Carbon::now()->subDays(1);
+        $date_fiveday = \Carbon\Carbon::today()->subDays(6);
+        $date_fiveday_end = \Carbon\Carbon::today()->subDays(1);
+        $date_lastmonth_start = \Carbon\Carbon::now()->subMonth()->startOfMonth()->toDateString();
+        $date_lastmonth_end   = \Carbon\Carbon::now()->subMonth()->endOfMonth()->toDateString();
+        $date_thismonth_start =\Carbon\Carbon::today()->startOfMonth();
+        $date_thismonth_end = \Carbon\Carbon::today()->endOfMonth();
+        $date_allyear62_start = \Carbon\Carbon::today()->startOfYear();
+        $date_allyear62_end = \Carbon\Carbon::today()->endOfYear();
+
+        if(auth()->user()->hasRole("admin")){
+
+            $count_order = DB::table('orders')
+            ->select(DB::raw('count(*) as order_count'))
+            ->get();
+
+            $count_user = DB::table('users')
+            ->select(DB::raw('count(*) as user_count'))
+            ->get();
+
+            $count_price = DB::table('orders')
+            ->where('order_appove','=','2')
+            ->sum('order_price');
+
+            $count_today = DB::table('orders')
+            ->where('order_date','=',$date_today)
+            ->where('order_appove','=','2')
+            ->sum('order_price');
+
+            // dd($count_today);
+
+            $count_3dayprice = DB::table('orders')
+            ->where('order_date','>',$date_threeday)
+            ->where('order_date','<',$date_threeday_end)
+            ->where('order_appove','=','2')
+            ->sum('order_price');
+            //dd($date_today);
+
+            $count_5dayprice = DB::table('orders')
+            ->where('order_date','>',$date_fiveday)
+            ->where('order_date','<=',$date_fiveday_end)
+            ->where('order_appove','=','2')
+            ->sum('order_price');//แก้แล้วว ห้ามแก้ต่ออออ
+
+            $count_lastmonth = DB::table('orders')
+            // ->select('order_appove','order_date','order_price')
+
+            // ->where($date_lastmonth_start,'>=','order_date')
+            ->where('order_date','<=',$date_lastmonth_end)
+            ->sum('order_price');
+            // ->whereBetween('order_date',[$date_lastmonth_start, $date_lastmonth_end])
+            // ->where('order_appove','=','2')
+
+            // dd($date_thismonth_start);
+            $count_thismonth = DB::table('orders')
+            ->where('order_appove','=','2')
+            ->where('order_date','>=',$date_thismonth_start)
+            ->where('order_date','<',$date_thismonth_end)
+            ->sum('order_price');
+            //dd($date_thismonth_end);
+            $count_allyear62 = DB::table('orders')
+            ->where('order_date','>=',$date_allyear62_start)
+            ->where('order_date','<',$date_allyear62_end)
+            ->where('order_appove','=','2')
+            ->sum('order_price');
+
+
+
+
+
+
+        return view('admin_1.dashboard',compact('count_order','count_user','count_price','count_today','count_3dayprice','count_5dayprice','count_lastmonth','count_thismonth','count_allyear62'));
+    }else
+    {
+
+    return view('errors');
+       }
+
+    }
+
+
+    public function Adminupdatenote(Request $request, $id)
+        {
+
+        if(auth()->user()->hasRole("admin")){
+            $validatedData = $request->validate([
+                'order_note' => 'required|max:255',
+
+            ]);
+            Order::whereId($id)->update($validatedData);
+           // Alert::success('Note is successfully Edited', '');
+
+            return Redirect::back()->with('message','Operation Successful !');
+        }else
+        {
+
+        return view('errors');
+           }
+        }
+
+
+
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        if(auth()->user()->hasRole("admin")){
+
+      $orders = order::where('order_code', '=' , $id)->get();
+      $orderhaveslip = order::where('order_code','=',$id)
+      ->join('slips', 'orders.id', '=', 'slips.slip_orders_id')->get();
+     //dd($orders) or die();
+      return view('orders.booking', compact('orders', 'id','orderhaveslip'));
+  }else
+        {
+
+        return view('errors');
+           }
+
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+    public function export()
+    {
+        return Excel::download(new UsersExport, 'users.xlsx');
+
+    }
+
+    public function export_ordersToDay()
+    {
+        return Excel::download(new OrdersToDayExport, 'orderToDay.xlsx'); //วันนี้
+    }
+
+    public function export_OrdersThreeDay()
+    {
+        return Excel::download(new OrdersThreeDayExport, 'OrderThreeDay.xlsx'); //3วันที่แล้ว
+    }
+
+    public function export_ordersFiveDay()
+    {
+        return Excel::download(new OrdersFiveDayExport, 'OrderFiveDay.xlsx'); //5วันที่แล้ว
+    }
+
+    public function export_orders()
+    {
+        return Excel::download(new OrdersExport, 'orders.xlsx'); //เดือนนี้
+    }
+
+    public function export_ordersLastMonth()
+    {
+        return Excel::download(new OrdersLastMonthExport, 'OrdersLastMonth.xlsx'); //เดือนที่แล้ว
+    }
+
+    public function export_OrdersAllYear()
+    {
+        return Excel::download(new OrdersAllYearExport, 'OrdersAllYear.xlsx'); //ทั้งปี62
+    }
+
+    public function sentlineorder($id){
+
+
+        // $users = order::where('orders.id', '=' , $id)
+        // ->join('users', 'orders.order_user_id', '=', 'users.id')
+        //  ->get();
+
+           $users = DB::table('orders')
+         ->where('orders.order_code', '=' , $id)
+         ->join('users', 'orders.order_user_id', '=', 'users.id')
+         ->first();
+            // dd($users);
+        $accessToken = "CSauZ7fd6W7nv6ycXkR1q5opd1MYmtmv2H6r/wYT0cpcjvzaznd5BmtdWv3asW32eb3fEJRdip3/rUCGZVZTzmZ1S8x09x+wYJLDYcruLvq/qdhLanwxyCYoSg/3+7l6WPri4ybXxs8D2wBQb+J/RwdB04t89/1O/w1cDnyilFU=";
+
+        $content = file_get_contents('php://input');
+        // ดัก event ต่างๆ/
+        $arrayJson = json_decode($content, true);
+        $arrayHeader = array();
+        $arrayHeader[] = "Content-Type: application/json";
+        $arrayHeader[] = "Authorization: Bearer {$accessToken}";
+         $messages[]  = [
+
+                            // "type" =>"text",
+                            // "text" =>"test"
+
+                            "type" => "flex",
+    "altText" => "Hello Flex Message",
+    "contents" => [
+      "type" => "bubble",
+      "direction" => "ltr",
+      "header" => [
+        "type" => "box",
+        "layout" => "vertical",
+        "contents" => [
+          [
+            "type" => "text",
+            "text" => "Purchase complete",
+            "size" => "lg",
+            "align" => "start",
+            "weight" => "bold",
+            "color" => "#009813"
+          ],
+          [
+            "type" => "text",
+            "text" => $users->order_name,
+            "size" => "3xl",
+            "weight" => "bold",
+            "color" => "#000000"
+          ],
+          [
+            "type" => "text",
+            "text" => "ONELIFEBOOKING",
+            "size" => "lg",
+            "weight" => "bold",
+            "color" => "#000000"
+          ],
+          [
+            "type" => "text",
+            "text" => "2019.02.14 21:47 (GMT+0700)",
+            "size" => "xs",
+            "color" => "#B2B2B2"
+          ],
+          [
+            "type" => "text",
+            "text" => "Payment complete.",
+            "margin" => "lg",
+            "size" => "lg",
+            "color" => "#000000"
+          ]
+        ]
+      ],
+      "body" => [
+        "type" => "box",
+        "layout" => "vertical",
+        "contents" => [
+          [
+            "type" => "separator",
+            "color" => "#C3C3C3"
+          ],
+          [
+            "type" => "box",
+            "layout" => "baseline",
+            "margin" => "lg",
+            "contents" => [
+              [
+                "type" => "text",
+                "text" => "Quantity",
+                "align" => "start",
+                "color" => "#C3C3C3"
+              ],
+              [
+                "type" => "text",
+                "text" => $users->order_qty,
+                "align" => "end",
+                "color" => "#000000"
+              ]
+            ]
+          ],
+          [
+            "type" => "box",
+            "layout" => "baseline",
+            "margin" => "lg",
+            "contents" => [
+              [
+                "type" => "text",
+                "text" => "Total",
+                "color" => "#C3C3C3"
+              ],
+              [
+                "type" => "text",
+                "text" => $users->order_price ."฿",
+                "align" => "end"
+              ]
+            ]
+          ],
+          [
+            "type" => "separator",
+            "margin" => "lg",
+            "color" => "#C3C3C3"
+          ]
+        ]
+      ],
+      "footer" => [
+        "type" => "box",
+        "layout" => "horizontal",
+        "contents" => [
+          [
+            "type" => "text",
+            "text" => "View Details",
+            "size" => "lg",
+            "align" => "start",
+            "color" => "#0084B6",
+            "action" => [
+              "type" => "uri",
+              "label" => "View SlipDetails",
+              "uri" => "http://demo.pnall.co.th/orders"
+            ]
+          ]
+        ]
+      ]
+    ]
+  ];
+
+                  $message = collect($messages);
+        $data = collect([
+            "to" => $users->user_lineuid,
+            "messages" => $message
+        ]);
+        Log::info($message);
+
+        linewebhook::sent($data, $arrayHeader);
+         Alert::success('Line is successfully sent', '');
+         return back()->with('success','You have successfully update ');
+
+    }
+
+
+}

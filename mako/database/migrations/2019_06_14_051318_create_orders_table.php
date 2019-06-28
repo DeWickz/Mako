@@ -17,7 +17,7 @@ class CreateOrdersTable extends Migration
             $table->bigIncrements('id');
             $table->string('order_name');
             $table->string('order_code');
-            $table->string('order_date');
+            $table->date('order_date');
             $table->string('order_user_id');
             $table->string('order_PaymentMethod');
             $table->timestamps();

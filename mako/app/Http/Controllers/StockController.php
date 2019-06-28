@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Stock;
+use App\User;
 use Illuminate\Http\Request;
 
 class StockController extends Controller
@@ -14,7 +15,8 @@ class StockController extends Controller
      */
     public function index()
     {
-        //
+        $stocks = stock::all();
+        return view('admin.stocks.index', compact('stocks'));
     }
 
     /**
@@ -24,7 +26,7 @@ class StockController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.stocks.create');
     }
 
     /**
@@ -35,7 +37,8 @@ class StockController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        stock::create($request->all());
+        return redirect()->route('admin.stocks.index');
     }
 
     /**
@@ -57,7 +60,7 @@ class StockController extends Controller
      */
     public function edit(Stock $stock)
     {
-        //
+        return view('admin.stocks.edit', compact('stock'));
     }
 
     /**
@@ -69,7 +72,8 @@ class StockController extends Controller
      */
     public function update(Request $request, Stock $stock)
     {
-        //
+        $stock->update($request->all());
+        return redirect()->route('admin.stocks.index');
     }
 
     /**
@@ -80,6 +84,7 @@ class StockController extends Controller
      */
     public function destroy(Stock $stock)
     {
-        //
+        $stock->delete();
+        return redirect()->route('admin.stocks.index');
     }
 }

@@ -32,7 +32,9 @@ class ProductController extends Controller
      */
     public function create($group_id = null)
     {
-        return view('admin.products.create');
+        $groups = Group::all();
+
+        return view('admin.products.create', compact('groups'));
     }
 
     /**
@@ -43,21 +45,21 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request);
 
-        $product = request()->validate([
-            'product_name' => ['required', 'string', 'max:255'],
-            'product_code' => ['required', 'integer',],
-            'product_price' => ['required', 'integer',],
-            'product_detail' => ['required', 'string', 'max:255'],
-            'product_createdBy' => ['required', 'string', 'max:255'],
-            'product_brand' => ['required', 'string', 'max:255'],
-            'product_group' => ['required', 'string', 'max:255'],
-            'product_warranty' => ['required', 'string', 'max:255'],
-            'product_model' => ['required', 'string', 'max:255'],
-            'product_images' => ['required', 'string', 'max:255'],
-            'group_id' => ['required', 'integer',],
-        ]);
+
+        // $pro = request()->validate([
+        //     'product_name' => ['required', 'string', 'max:255'],
+        //     'product_code' => ['required', 'integer',],
+        //     'product_price' => ['required', 'integer',],
+        //     'product_detail' => ['required', 'string', 'max:255'],
+        //     'product_createdBy' => ['required', 'string', 'max:255'],
+        //     'product_brand' => ['required', 'string', 'max:255'],
+        //     'product_group' => ['required', 'string', 'max:255'],
+        //     'product_warranty' => ['required', 'string', 'max:255'],
+        //     'product_model' => ['required', 'string', 'max:255'],
+        //     'product_images' => ['required', 'string', 'max:255'],
+        //     'group_id' => ['required', 'integer',],
+        // ]);
 
         $pro = new Product;
         $pro->product_name = $request->input('product_name');
@@ -73,7 +75,9 @@ class ProductController extends Controller
         $pro->group_id = $request->input('group_id');
         //$pro->product_images = $fileNameToStroe;
 
-        // $pro->save();
+
+        // ]);
+        //         dd($pro);
 
         //if($request->hasFile('product_images')){
         //    $filenameWithExt = $request->file('product_images')->getClientOriginalName();
@@ -97,13 +101,13 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function show($request)
     {
         $pro = Product::all()
-            ->where('group_id','=', 1);
-        //dd($pro);
+            ->where('group_id','=', $request);
+        // dd($pro);
         //เอาข้อมูลออกไม่ได้ท่าใช้ request
-        return view('admin.products.view',compact('pro'));
+        return view('\user\showgroup',compact('pro'));
 
 
     }
@@ -122,10 +126,12 @@ class ProductController extends Controller
 
     }
 
-    public function view()
+    public function view($request)
     {
-        $products = Product::all();
-        return view('admin.products.view',compact('products'));
+        $pro = Product::all()
+            ->where('id','=', $request);
+        dd($pro);
+        return view('admin.products.viewproduct',compact('pro'));
     }
 
     /**
