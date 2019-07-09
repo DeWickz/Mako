@@ -29,8 +29,8 @@
         Tip 2: you can also add an image using data-image tag
     -->
       <div class="logo">
-        <a href="{{ url('/') }}" class="simple-text logo-normal">
-          Moka
+        <a class="navbar-brand" href="{{ url('/') }}">
+            <img src="/user_asset/images/icons/mokaLogo3.png" class="pl-3" style="height: 20px">
         </a>
       </div>
       <div class="sidebar-wrapper">
@@ -136,12 +136,12 @@
                        onclick="event.preventDefault();
                        document.getElementById('logout-form').submit();">
                         {{ __('Logout') }}
-                         </a>
+                    </a>
 
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                         @csrf
-                        </form>
-                        </div>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                    </form>
+                </div>
               </li>
             </ul>
           </div>

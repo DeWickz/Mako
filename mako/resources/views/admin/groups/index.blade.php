@@ -52,7 +52,7 @@
 
 
 </table>
-
+{{ $groups->links() }}
 
 
 </html>

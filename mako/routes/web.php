@@ -25,11 +25,39 @@ Route::get('/viewproducts', 'ProductController@view');
 Route::get('/groups', 'GroupController@index')->name('groups');
 Route::get('/products/update' ,'ProductController@update' );
 
-Route::get('/showproduct', 'UserController@view');
+Route::get('/showproduct', 'ProductController@show');
+
+Route::get('/showproducts', 'ViewProductController@show');
+
+Route::get('/adminhome', 'HomeController@index');
+
+Route::get('/addtocart/{id}', 'ProductController@addtocart')->name('addtocart');
+
+Route::get('/profile', 'UserController@profile')->name('profile');
+
+Route::get('/shoppingCart', 'ProductController@cart')->name('shoppingCart');
+
+Route::get('/checkout', 'ProductController@checkout')->name('checkout');
+
+Route::get('/usertest',function()
+{
+    return view('profile.userinfo');
+})->name('profile.userinfo');
 
 Route::resource('productsWelcome', 'ProductController');
 Route::resource('productsWelcome2', 'UserController');
+// Route::resource('addtocart', 'ProductController');
 //Route::get('/products/{id}', 'ProductController@show');
+
+Route::get('/userinfo', 'UserController@userinfo')->name('profile.userinfo');
+Route::get('/personal', 'UserController@personal')->name('profile.personal');
+Route::get('/addressbook', 'UserController@addressbook')->name('profile.addressbook');
+Route::get('/payment', 'UserController@payment')->name('profile.payment');
+Route::get('/editPersonal/{id}', 'UserController@editPersonal')->name('profile.editPersonal');
+Route::get('/updatePersonal', 'UserController@updatePersonal')->name('profile.updatePersonal');
+
+Route::post('/addAddress', 'UserController@create')->name('profile.addAddress');
+// Route::resource('editPersonal', 'UserController');
 
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function(){
     Route::resource('addproduct', 'ProductController');

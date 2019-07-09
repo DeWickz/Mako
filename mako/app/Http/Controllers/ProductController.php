@@ -5,12 +5,12 @@ use App\Product;
 use App\Group;
 use App\Cart;
 use DB;
+use Session;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Gloudemans\Shoppingcart\Contracts\Buyable;
-
 
 class ProductController extends Controller
 {
@@ -21,8 +21,20 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
-        return view('admin.products.index',compact('products'));
+        if(auth()->user()->hasRole("admin")){
+            $products= DB::table('products')
+            ->paginate(4);
+
+
+            return view('admin.products.index',compact('products'));
+        }
+        else
+        {
+            return view('errors');
+        }
+
+        // $products = Product::all();
+        // return view('admin.products.index',compact('products'));
     }
 
     /**
@@ -30,7 +42,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($group_id = null)
+    public function create()
     {
         $groups = Group::all();
 
@@ -73,6 +85,7 @@ class ProductController extends Controller
         $pro->product_model = $request->input('product_model');
         $pro->product_images = $request->input('product_images');
         $pro->group_id = $request->input('group_id');
+        $pro->save();
         //$pro->product_images = $fileNameToStroe;
 
 
@@ -91,7 +104,7 @@ class ProductController extends Controller
           //  $path = $request->file('product_images')->storeAs('public/product_images',$fileNameToStroe);
 
          // }
-
+        // dd($pro);
         return  redirect()->route('admin.products.index');
     }
 
@@ -103,12 +116,31 @@ class ProductController extends Controller
      */
     public function show($request)
     {
-        $pro = Product::all()
-            ->where('group_id','=', $request);
-        // dd($pro);
-        //เอาข้อมูลออกไม่ได้ท่าใช้ request
-        return view('\user\showgroup',compact('pro'));
+        $products = Product::all()
+        ->where('id','=', $request);
 
+        $productslist = DB::table('products')
+        ->where('group_id','=', $request)
+        ->paginate(12);
+
+        $groupID = DB::table('products')
+        ->select('group_id')
+        ->where('id', '=', $request)
+        ->pluck('group_id');
+
+        $groupname = DB::table('groups')
+        ->select('group_name')
+        ->where('id','=',$request)
+        ->get();
+
+        $relatedproducts = DB::table('products')
+        ->select('product_name','group_id','id','product_price')
+        ->where('group_id','=', $groupID)
+        ->get();
+
+        // dd($products);
+
+        return view('\user\showgroup',compact('products','productslist','groupID','relatedproducts','groupname'));
 
     }
 
@@ -121,7 +153,6 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         //dd($products);
-
         return view('admin.products.edit',compact('product'));
 
     }
@@ -130,7 +161,7 @@ class ProductController extends Controller
     {
         $pro = Product::all()
             ->where('id','=', $request);
-        dd($pro);
+        // dd($pro);
         return view('admin.products.viewproduct',compact('pro'));
     }
 
@@ -180,6 +211,56 @@ class ProductController extends Controller
 
 		//save file name + file id into database
 
+    }
+
+    public function addtocart(Request $request, $id)
+    {
+        $product = Product::find($id);
+        $oldCart = Session::has('cart') ? Session::get('cart') : null;
+        $cart = new Cart($oldCart);
+        $cart->add($product, $product->id);
+
+        $request->session()->put('cart',$cart);
+        // dd($request->session()->get('cart'));
+        return back();
+    }
+
+    public function cart()
+    {
+        if (!Session::has('cart')){
+            return view('shoppingCart');
+        }
+        $oldCart = Session::get('cart');
+        $cart = new Cart($oldCart);
+        $products = $cart->items;
+        $totalPrice = $cart->totalPrice;
+        $total = [0];
+
+        foreach($products as $product)
+        {
+            $total[0] += $product['total'];
+        }
+
+        $groups = Group::all();
+        // dd($products);
+        return view('shoppingCart', compact('products','totalPrice','groups','total'));
+    }
+
+
+    public function checkout()
+    {
+        if (!Session::has('cart')){
+            return view('shoppingCart');
+        }
+        $oldCart = Session::get('cart');
+        $cart = new Cart($oldCart);
+        $products = $cart->items;
+        $total = [0];
+        foreach($products as $product)
+        {
+            $total[0] += $product['total'];
+        }
+        return view('checkout', compact('total','products'));
     }
 }
 

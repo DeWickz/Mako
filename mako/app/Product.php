@@ -16,6 +16,11 @@ class Product extends Model
         return $this->belongsTo(\App\Group::class);
     }
 
+    public function type()
+    {
+        return $this->belongsTo(\App\Type::class);
+    }
+
     // public function cart()
     // {
     //     return $this->hasOne(\App\Cart::class);

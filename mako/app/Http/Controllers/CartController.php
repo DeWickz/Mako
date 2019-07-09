@@ -40,14 +40,14 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
-        $car = new Cart;
-        $car->product_id = $request->input('product_id');
-        $car->user_id = $request->input('user_id');
+        // dd($request);
+        // $car = new Cart::;
+        // $car->product_id = $request->input('product_id');
+        // $car->user_id = $request->input('user_id');
 
-        $car->save();
-        Alert::success('Item added into cart', '1 item added');
-        return  redirect()->route('admin.products.edit');
+        // $car->save();
+        // Alert::success('Item added into cart', '1 item added');
+        // return  redirect()->route('admin.products.edit');
     }
 
     /**
@@ -97,10 +97,8 @@ class CartController extends Controller
 
     public function add(Request $request)
     {
-        $add = Cart::add([
-            'id'=> $request->id,
-            'product_name'=>$request->product_name,
-
-        ]);
     }
+
+    public function addtocart()
+    {}
 }

@@ -67,33 +67,20 @@
 
                         <br/>
 
-                        group_id:
 
-                        <input type="text" name="group_id" class="form-control"/>
 
-                        <br/>
-
-                        <div class = "dropdown">
-                            <div class="dropdown-menu dropdown-primary">
-                                @foreach ($groups as $group)
-                                    <a value="{{ $group->id }}" ><br/></a>
-                                @endforeach
-                            </div>
-                        </div>
-
-                        {{-- group_id:
-                        <div class="dropdown">
-                            <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            </button>
-                                <div class="dropdown-menu dropdown-primary">
-                                    @foreach ($classname_array as $data)
-                                        <a value="{{ $data->id }}" >{{ $data->group_name }}<br/></a>
-                                    @endforeach
-                                </div>
-                        </div>
-                        <br/>
-                        <br/> --}}
+                        group:
+                        <br>
+                        <br>
+                        <select name="group_id">
+                            @foreach($groups as $group)
+                                <option value="{{ $group->id }}">{{ $group->group_name }}<br/></option>
+                            @endforeach
+                        </select>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
 
                         <input type="submit" value="Save" class="btn btn-primary">
 
@@ -110,7 +97,7 @@
                                 </head>
 
                                 <body>
-                                    <div class="pl-2" class="dropzone" method="post" enctype="multipart/form-data" >Image upload</div>
+                                    <div class="pl-2" class="dropzone form-control" method="post" enctype="multipart/form-data" >Image upload</div>
                                         {{ Form::open(array('url' => 'imageUpload', 'method' => 'PUT', 'name'=>'product_images', 'id'=>'myImageDropzone', 'class'=>'dropzone', 'files' => true)) }}
                                         {{ Form::close() }}
                                 </body>

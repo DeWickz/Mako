@@ -38,6 +38,7 @@
 <body class="animsition">
     @include('sweetalert::alert')
 
+
 	<!-- Header -->
 	<header class="header1">
 		<!-- Header desktop -->
@@ -68,96 +69,197 @@
 
 
 
+        <!-- Menu -->
+		<div class="wrap_menu">
+			<nav class="menu">
+				<ul class="main_menu">
+					<li>
+						<a href="showproducts">Products</a>
+						<ul class="sub_menu">
+                            @foreach($groups as $group)
+							<li><a href="{{ route('productsWelcome.show', $group->id) }}">
+                                {{$group->group_name}}
+                            @endforeach
+                            </a></li>
+
+						</ul>
+					</li>
+
+					<li>
+						<a href="product.html">Shop</a>
+					</li>
+
+					<li class="sale-noti">
+						<a href="product.html">Sale</a>
+					</li>
+
+					<li>
+						<a href="cart.html">Features</a>
+					</li>
+
+					<li>
+						<a href="blog.html">Blog</a>
+					</li>
+
+					<li>
+						<a href="about.html">About</a>
+					</li>
+
+					<li>
+						<a href="contact.html">Contact</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+
 		<!-- Header Icon -->
 		<div class="header-icons">
-					<a href="{{ route('login') }}" class="header-wrapicon1 dis-block pt-1">
-						Login{{-- <img src="/user_asset/images/icons/icon-header-01.png" class="header-icon1" alt="ICON"> --}}
-                    </a>
+             @guest
+                    @if (Route::has('login'))
+                    <div class="wrap_menu pt-1">
+                            <nav class="menu">
+                                <ul class="main_menu">
+                                    <li>
+                                        <img src="/user_asset/images/icons/icon-header-01.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
+
+                                        <ul class="sub_menu">
+                                            <li><a href="{{ route('login') }}">
+                                                Login{{-- <img src="/user_asset/images/icons/icon-header-01.png" class="header-icon1" alt="ICON"> --}}
+                                            </a>
+                                            </li>
+                                            <li><a href="{{ route('register') }}">
+                                                Register
+                                            </a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                @endguest
+                    @else
+                        @role('admin')
+                        <div class="wrap_menu pt-1">
+                            <nav class="menu">
+                                <ul class="main_menu">
+                                    <li>
+                                        <img src="/user_asset/images/icons/icon-header-03.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
+
+                                        <ul class="sub_menu">
+                                            <li><a href="userinfo">
+                                                @foreach($user_detail as $user)
+                                                {{$user->user_firstname}}'s  Profile
+                                                @endforeach
+                                            </a></li>
+                                            <li><a href="adminhome">
+                                                Admin Dashboard
+                                            </a></li>
+                                            <li><a class="dropdown-item" href="{{ route('logout') }}"
+                                                onclick="event.preventDefault();
+                                                document.getElementById('logout-form').submit();">
+                                                 {{ __('Logout') }}
+                                             </a>
+
+                                             <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                                             @csrf
+                                             </form></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        @endrole
+                        @role('customer')
+                        <div class="wrap_menu pt-1">
+                            <nav class="menu">
+                                <ul class="main_menu">
+                                    <li>
+                                        <img src="/user_asset/images/icons/icon-header-03.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
+
+                                        <ul class="sub_menu">
+                                            <li><a href="profile">
+                                                @foreach($user_detail as $user)
+                                                {{$user->user_firstname}}'s  Profile
+                                                @endforeach
+                                            </a></li>
+                                            <li><a class="dropdown-item" href="{{ route('logout') }}"
+                                                onclick="event.preventDefault();
+                                                document.getElementById('logout-form').submit();">
+                                                 {{ __('Logout') }}
+                                             </a>
+
+                                             <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                                             @csrf
+                                             </form></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        @endrole
+                    @endif
 
                     <span class="linedivide1"></span>
-
-                    <a href="{{ route('register') }}" class="header-wrapicon1 dis-block pt-1">
-                        Register
-                    </a>
-
-					<span class="linedivide1"></span>
-
 					<div class="header-wrapicon2">
+
                         <img src="/user_asset/images/icons/icon-header-02.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
-						<span class="header-icons-noti">0</span>
+                            <span class="header-icons-noti">{{Session::has('cart') ?
+                            Session::get('cart')->totalQty : ''}}
+                            </span>
+
 
 						<!-- Header cart noti -->
 						<div class="header-cart header-dropdown">
 							<ul class="header-cart-wrapitem">
-								<li class="header-cart-item">
+                                @if(!Session::has('cart'))
+                                <li class="header-cart-item">
+                                    <h1>No items in cart</h1>
+                                </li>
+
+                                @else
+                            @foreach($products as $product)
+                                <li class="header-cart-item">
 									<div class="header-cart-item-img">
 										<img src="/user_asset/images/item-cart-01.jpg" alt="IMG">
 									</div>
 
 									<div class="header-cart-item-txt">
 										<a href="#" class="header-cart-item-name">
-											White Shirt With Pleat Detail Back
+                                            {{$product['item']['product_name']}}
 										</a>
 
 										<span class="header-cart-item-info">
-											1 x $19.00
+                                    ‎        ฿ {{$product['price']}} x {{$product['qty']}}
 										</span>
 									</div>
-								</li>
+                                </li>
+                                @endforeach
 
-								<li class="header-cart-item">
-									<div class="header-cart-item-img">
-										<img src="/user_asset/images/item-cart-02.jpg" alt="IMG">
-									</div>
+                            </ul>
 
-									<div class="header-cart-item-txt">
-										<a href="#" class="header-cart-item-name">
-											Converse All Star Hi Black Canvas
-										</a>
-
-										<span class="header-cart-item-info">
-											1 x $39.00
-										</span>
-									</div>
-								</li>
-
-								<li class="header-cart-item">
-									<div class="header-cart-item-img">
-										<img src="/user_asset/images/item-cart-03.jpg" alt="IMG">
-									</div>
-
-									<div class="header-cart-item-txt">
-										<a href="#" class="header-cart-item-name">
-											Nixon Porter Leather Watch In Tan
-										</a>
-
-										<span class="header-cart-item-info">
-											1 x $17.00
-										</span>
-									</div>
-								</li>
-							</ul>
 
 							<div class="header-cart-total">
-								Total: $75.00
-							</div>
+                                @foreach($total as $totals)
+                                Total: ฿ {{$totals}}
+                                @endforeach
+                            </div>
+                            @endif
 
 							<div class="header-cart-buttons">
 								<div class="header-cart-wrapbtn">
 									<!-- Button -->
-									<a href="cart.html" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+									<a href="shoppingCart" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
 										View Cart
 									</a>
 								</div>
 
 								<div class="header-cart-wrapbtn">
 									<!-- Button -->
-									<a href="#" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+									<a href="{{route('checkout')}}" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
 										Check Out
 									</a>
 								</div>
 							</div>
-						</div>
+                        </div>
 					</div>
 				</div>
 			</div>
@@ -258,21 +360,12 @@
 						</div>
 					</div>
 				</div>
-
-				<div class="btn-show-menu-mobile hamburger hamburger--squeeze">
+			</div>
+		</div>{{-- <div class="btn-show-menu-mobile hamburger hamburger--squeeze">
 					<span class="hamburger-box">
 						<span class="hamburger-inner"></span>
 					</span>
-				</div>
-			</div>
-		</div>
-
-
-
-
-
-
-
+				</div> --}}
 
 	<!-- Slide1 -->
 	<section class="slide1">
@@ -291,7 +384,7 @@
 
 						<div class="wrap-btn-slide1 w-size1 animated visible-false" data-appear="slideInUp">
 							<!-- Button -->
-							<a href="product.html" class="flex-c-m size2 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
+							<a href="showproducts" class="flex-c-m size2 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
 								Shop Now
 							</a>
 						</div>
@@ -310,7 +403,7 @@
 
 						<div class="wrap-btn-slide1 w-size1 animated visible-false" data-appear="rotateIn">
 							<!-- Button -->
-							<a href="product.html" class="flex-c-m size2 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
+							<a href="showproducts" class="flex-c-m size2 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
 								Shop Now
 							</a>
 						</div>
@@ -453,11 +546,11 @@
 
                                         <div class="block2-btn-addcart w-size1 trans-0-4">
                                             <!-- Button -->
-                                            <button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
-                                                <a href="{{ route('productsWelcome.show', $group->id) }}" style="color:white">
+                                            {{-- <button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4"> --}}
+                                                <a href="{{ route('productsWelcome.show', $group->id) }}" class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4"style="color:white">
                                                     View {{$group->group_name}}
                                                 </a>
-                                            </button>
+                                            {{-- </button> --}}
                                         </div>
                                     </div>
                                 </div>
@@ -534,7 +627,7 @@
                     <!-- Product -->
 
 					<div class="row">
-                        @foreach($products as $product)
+                        @foreach($allproducts as $product)
 						<div class="col-sm-3 col-md-3 col-lg-3 p-b-50">
                             <!-- Block2 -->
 							<div class="block2">
@@ -550,11 +643,11 @@
 										<div class="block2-btn-addcart w-size1 trans-0-4">
 
                                             <!-- Button -->
-                                            <button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
-                                                <a href="{{ route('productsWelcome2.show', $product->id) }}", style="color:white">
+                                            {{-- <button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4"> --}}
+                                                <a href="{{ route('productsWelcome2.show', $product->id) }}" class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4" style="color:white">
                                                     View details
                                                 </a>
-                                            </button>
+                                            {{-- </button> --}}
 										</div>
 									</div>
 								</div>
@@ -572,9 +665,9 @@
                             </div>
 
                         </div>
-                        @endforeach
-
-				</div>
+                    @endforeach
+                </div>
+                {{ $allproducts->links() }}
 			</div>
 		</div>
 	</section>

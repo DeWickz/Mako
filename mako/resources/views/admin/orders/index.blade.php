@@ -61,6 +61,7 @@
 
 
 </table>
+{{ $orders->links() }}
 
 
 

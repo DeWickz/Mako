@@ -14,6 +14,11 @@ class Group extends Model
         return $this->hasMany(\App\Product::class);
     }
 
+    protected function types()
+    {
+        return $this->hasMany(\App\Type::class);
+    }
+
 }
 
 
