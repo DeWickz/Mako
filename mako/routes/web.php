@@ -27,17 +27,23 @@ Route::get('/products/update' ,'ProductController@update' );
 
 Route::get('/showproduct', 'ProductController@show');
 
-Route::get('/showproducts', 'ViewProductController@show');
+Route::get('/showproducts', 'ViewProductController@show')->name('showproducts');
 
-Route::get('/adminhome', 'HomeController@index');
+Route::get('/adminhome', 'HomeController@index')->name('adminhome');
 
 Route::get('/addtocart/{id}', 'ProductController@addtocart')->name('addtocart');
+
+Route::get('/addtocart2/{id}', 'ProductController@addtocart2')->name('addtocart2');
 
 Route::get('/profile', 'UserController@profile')->name('profile');
 
 Route::get('/shoppingCart', 'ProductController@cart')->name('shoppingCart');
 
 Route::get('/checkout', 'ProductController@checkout')->name('checkout');
+
+Route::get('/reduce/{id}', 'ProductController@reducebyone')->name('reducebyone');
+
+Route::get('/remove/{id}', 'ProductController@removeitem')->name('removeitem');
 
 Route::get('/usertest',function()
 {

@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 
-		<title></title>
-		<meta charset="UTF-8">
+    <title>Moka</title>
+    <meta charset="UTF-8">
 
 	<link rel="icon" type="image/png" href="images/icons/camera_lens.png"/>
 <!--===============================================================================================-->
@@ -43,6 +43,7 @@
 
 </head>
 
+
 <body class="animsition">
 
 	<!-- Header -->
@@ -80,18 +81,18 @@
                 <nav class="menu">
                     <ul class="main_menu">
                         <li>
-                            <a href="showproducts">Products</a>
+                            <a href="{{route('showproducts')}}">Products</a>
                             <ul class="sub_menu">
-                                {{-- @foreach($groups as $group)
+                                @foreach($groups as $group)
                                 <li><a href="{{ route('productsWelcome.show', $group->id) }}">
                                     {{$group->group_name}}
                                 @endforeach
-                                </a></li> --}}
+                                </a></li>
                             </ul>
                         </li>
 
                         <li>
-                            <a href="product.html">Shop</a>
+                            <a href="{{route('showproducts')}}">Shop</a>
                         </li>
 
                         <li class="sale-noti">
@@ -150,7 +151,12 @@
                                             <img src="/user_asset/images/icons/icon-header-03.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
 
                                             <ul class="sub_menu">
-                                                <li><a href="adminhome">
+                                                <li><a href={{route('profile.userinfo')}}>
+                                                    @foreach($user_detail as $user)
+                                                    {{$user->user_firstname}}'s  Profile
+                                                    @endforeach
+                                                </a></li>
+                                                <li><a href="{{route('adminhome')}}">
                                                     Admin Dashboard
                                                 </a></li>
                                                 <li><a class="dropdown-item" href="{{ route('logout') }}"
@@ -209,70 +215,51 @@
                             <!-- Header cart noti -->
                             <div class="header-cart header-dropdown">
                                 <ul class="header-cart-wrapitem">
+                                    @if(!Session::has('cart'))
+                                    <li class="header-cart-item">
+                                        <h1>No items in cart</h1>
+                                    </li>
+
+                                    @else
+                                @foreach($products as $product)
                                     <li class="header-cart-item">
                                         <div class="header-cart-item-img">
                                             <img src="/user_asset/images/item-cart-01.jpg" alt="IMG">
                                         </div>
 
                                         <div class="header-cart-item-txt">
-                                            <a href="#" class="header-cart-item-name">
-                                                White Shirt With Pleat Detail Back
+                                            <a href="{{ route('productsWelcome2.show', $product['item']['id']) }}" class="header-cart-item-name">
+                                                {{$product['item']['product_name']}}
                                             </a>
 
                                             <span class="header-cart-item-info">
-                                                1 x $19.00
+                                        ‎        ฿ {{$product['price']}} x {{$product['qty']}}
                                             </span>
                                         </div>
                                     </li>
+                                    @endforeach
 
-                                    <li class="header-cart-item">
-                                        <div class="header-cart-item-img">
-                                            <img src="/user_asset/images/item-cart-02.jpg" alt="IMG">
-                                        </div>
-
-                                        <div class="header-cart-item-txt">
-                                            <a href="#" class="header-cart-item-name">
-                                                Converse All Star Hi Black Canvas
-                                            </a>
-
-                                            <span class="header-cart-item-info">
-                                                1 x $39.00
-                                            </span>
-                                        </div>
-                                    </li>
-
-                                    <li class="header-cart-item">
-                                        <div class="header-cart-item-img">
-                                            <img src="/user_asset/images/item-cart-03.jpg" alt="IMG">
-                                        </div>
-
-                                        <div class="header-cart-item-txt">
-                                            <a href="#" class="header-cart-item-name">
-                                                Nixon Porter Leather Watch In Tan
-                                            </a>
-
-                                            <span class="header-cart-item-info">
-                                                1 x $17.00
-                                            </span>
-                                        </div>
-                                    </li>
                                 </ul>
 
+
                                 <div class="header-cart-total">
-                                    Total: $75.00
+                                    @foreach($total as $totals)
+                                    Total: ฿ {{$totals}}
+                                    @endforeach
                                 </div>
+                                @endif
 
                                 <div class="header-cart-buttons">
                                     <div class="header-cart-wrapbtn">
                                         <!-- Button -->
-                                        <a href="shoppingCart">
-                                                View Cart
-                                                </a>
+                                        <a href="{{route('shoppingCart')}}" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+                                            View Cart
+                                        </a>
                                     </div>
 
                                     <div class="header-cart-wrapbtn">
                                         <!-- Button -->
-                                        <a href="#" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+                                        <a href="{{route('checkout')}}" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
                                             Check Out
                                         </a>
                                     </div>
@@ -644,14 +631,6 @@
 
 <!--===============================================================================================-->
 	<script src="js/main.js"></script>
-
-
-
-
-
-
-
-
 
 </body>
 </html>

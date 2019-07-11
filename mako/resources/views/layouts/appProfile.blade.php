@@ -4,10 +4,10 @@
 <head>
   <meta charset="utf-8" />
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <link rel="icon" type="image/png" href="images/icons/camera_lens.png"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-    Material Dashboard by Creative Tim
+    Profile
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
@@ -37,7 +37,7 @@
       <div class="sidebar-wrapper">
         <ul class="nav">
 
-          <li class="nav-item active  ">
+          <li class="nav-item">
             <a class="nav-link" href="{{ route('profile.userinfo') }}">
               <i class="material-icons">dashboard</i>
               <p>จัดการกับบัญชีของฉัน</p>
@@ -111,11 +111,57 @@
                     </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">Mike John responded to your email</a>
-                    <a class="dropdown-item" href="#">You have 5 new tasks</a>
-                    <a class="dropdown-item" href="#">You're now friend with Andrew</a>
-                    <a class="dropdown-item" href="#">Another Notification</a>
-                    <a class="dropdown-item" href="#">Another One</a>
+                    <div class="header-wrapicon2">
+                        <!-- Header cart noti -->
+                        <div class="header-cart header-dropdown">
+                            <ul class="header-cart-wrapitem">
+                                @if(!Session::has('cart'))
+                                <li class="header-cart-item">
+                                    <h1>No items in cart</h1>
+                                </li>
+                                @else
+                            @foreach($products as $product)
+                                <li class="header-cart-item">
+                                    <div class="header-cart-item-txt">
+                                        <a href="#" class="header-cart-item-name">
+                                            {{$product['item']['product_name']}}
+                                        </a>
+
+                                        <span class="header-cart-item-info">
+                                    ‎        ฿ {{$product['price']}} x {{$product['qty']}}
+                                        </span>
+                                    </div>
+                                </li>
+                            @endforeach
+
+                            </ul>
+
+
+                            <div class="header-cart-total">
+                                @foreach($total as $totals)
+                                Total: ฿ {{$totals}}
+                                @endforeach
+                            </div>
+                            @endif
+
+                            <div class="header-cart-buttons">
+                                <div class="header-cart-wrapbtn">
+                                    <!-- Button -->
+                                    <a href="shoppingCart" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+                                        View Cart
+                                    </a>
+                                </div>
+
+                                <div class="header-cart-wrapbtn">
+                                    <!-- Button -->
+                                    <a href="{{route('checkout')}}" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+                                        Check Out
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
               </li>
 

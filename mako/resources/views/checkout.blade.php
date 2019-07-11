@@ -2,14 +2,8 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
-@extends('layouts.appss')
-
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-
+@extends('layouts.appz')
+@section('content')
 <title>Checkout</title>
 
 <section class="bg-title-page p-t-40 p-b-50 flex-col-c-m" style="background-image: url(images/heading-pages-01.jpg);">
@@ -99,3 +93,4 @@
         </div>
     </div>
 </div>
+@endsection

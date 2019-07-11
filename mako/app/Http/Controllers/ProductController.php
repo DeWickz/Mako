@@ -116,7 +116,43 @@ class ProductController extends Controller
      */
     public function show($request)
     {
-        $products = Product::all()
+        if (!Session::has('cart')){
+            $products = Product::all()
+            ->where('id','=', $request);
+
+            $productslist = DB::table('products')
+            ->where('group_id','=', $request)
+            ->paginate(12);
+
+            $groupID = DB::table('products')
+            ->select('group_id')
+            ->where('id', '=', $request)
+            ->pluck('group_id');
+
+            $groups = Group::all();
+
+            $groupname = DB::table('groups')
+            ->select('group_name')
+            ->where('id','=',$request)
+            ->get();
+
+            $relatedproducts = DB::table('products')
+            ->select('product_name','group_id','id','product_price')
+            ->where('group_id','=', $groupID)
+            ->get();
+
+            $user_id = Auth::id();
+
+            $user_detail = DB::table('users')
+            ->where('id','=',$user_id)
+            ->get();
+
+            // dd($products);
+
+            return view('\user\showgroup',compact('user_detail','products','productslist','groupID','relatedproducts','groupname','groups'));
+
+        }
+        $allproducts = Product::all()
         ->where('id','=', $request);
 
         $productslist = DB::table('products')
@@ -138,10 +174,31 @@ class ProductController extends Controller
         ->where('group_id','=', $groupID)
         ->get();
 
-        // dd($products);
+        $groups = Group::all();
+        $user_id = Auth::id();
 
-        return view('\user\showgroup',compact('products','productslist','groupID','relatedproducts','groupname'));
+        $user_detail = DB::table('users')
+        ->where('id','=',$user_id)
+        ->get();
 
+        $oldCart = Session::get('cart');
+        $cart = new Cart($oldCart);
+        $products = $cart->items;
+
+        $total = [0];
+
+        foreach($products as $product)
+        {
+            $total[0] += $product['price']*$product['qty'];
+        }
+
+        return view('\user\showgroup',compact('allproducts','productslist','groupID',
+                                              'relatedproducts','groupname',
+                                              'groups',
+                                              'user_detail',
+                                              'products',
+                                              'total'
+                                               ));
     }
 
     /**
@@ -219,16 +276,75 @@ class ProductController extends Controller
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
         $cart = new Cart($oldCart);
         $cart->add($product, $product->id);
-
         $request->session()->put('cart',$cart);
         // dd($request->session()->get('cart'));
         return back();
     }
 
+    public function addtocart2(Request $request, $id)
+    {
+        $product = Product::find($id);
+        $oldCart = Session::has('cart') ? Session::get('cart') : null;
+        $cart = new Cart($oldCart);
+        $cart->add($product, $product->id);
+        $request->session()->put('cart',$cart);
+        // dd($request->session()->get('cart'));
+        return redirect()->route('checkout');
+    }
+
+    public function reducebyone($id)
+    {
+        $oldCart = Session::has('cart') ? Session::get('cart') : null;
+        $cart = new Cart($oldCart);
+        $cart->reduceByOne($id);
+
+        if(count($cart->items) > 0)
+        {
+            Session::put('cart',$cart);
+        }
+        else
+        {
+            Session::forget('cart');
+        }
+        return back();
+    }
+
+    public function removeitem($id)
+    {
+        $oldCart = Session::has('cart') ? Session::get('cart') : null;
+        $cart = new Cart($oldCart);
+        $cart->removeItem($id);
+
+        if(count($cart->items) > 0)
+        {
+            Session::put('cart',$cart);
+        }
+        else
+        {
+            Session::forget('cart');
+        }
+
+        return back();
+    }
+
     public function cart()
     {
+        $user_id = Auth::id();
+        $user_detail = DB::table('users')
+        ->where('id','=',$user_id)
+        ->get();
+
+
         if (!Session::has('cart')){
-            return view('shoppingCart');
+            $groups = Group::all();
+
+            $user_id = Auth::id();
+
+            $user_detail = DB::table('users')
+            ->where('id','=',$user_id)
+            ->get();
+
+            return view('shoppingCart', compact('user_detail','groups'));
         }
         $oldCart = Session::get('cart');
         $cart = new Cart($oldCart);
@@ -238,19 +354,25 @@ class ProductController extends Controller
 
         foreach($products as $product)
         {
-            $total[0] += $product['total'];
+            $total[0] += $product['price']*$product['qty'];
         }
 
         $groups = Group::all();
         // dd($products);
-        return view('shoppingCart', compact('products','totalPrice','groups','total'));
+        return view('shoppingCart', compact('products','totalPrice','groups','total','user_detail'));
     }
 
 
     public function checkout()
     {
         if (!Session::has('cart')){
-            return view('shoppingCart');
+            $groups = Group::all();
+            $user_id = Auth::id();
+
+            $user_detail = DB::table('users')
+            ->where('id','=',$user_id)
+            ->get();
+            return view('shoppingCart',compact('groups','user_detail'));
         }
         $oldCart = Session::get('cart');
         $cart = new Cart($oldCart);
@@ -260,7 +382,13 @@ class ProductController extends Controller
         {
             $total[0] += $product['total'];
         }
-        return view('checkout', compact('total','products'));
+        $groups = Group::all();
+        $user_id = Auth::id();
+
+        $user_detail = DB::table('users')
+        ->where('id','=',$user_id)
+        ->get();
+        return view('checkout', compact('total','products','groups','user_detail'));
     }
 }
 
