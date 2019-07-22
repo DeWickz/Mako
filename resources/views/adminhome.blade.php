@@ -15,15 +15,17 @@
                   <div class="card-icon">
                     <i class="material-icons">content_copy</i>
                   </div>
-                  <p class="card-category">Used Space</p>
-                  <h3 class="card-title">49/50
-                    <small>GB</small>
+                  <p class="card-category">Total no. of Products</p>
+                  <h3 class="card-title">
+                      @foreach($count_product as $product)
+                        {{$product->count_product}}
+                      @endforeach
                   </h3>
                 </div>
                 <div class="card-footer">
                   <div class="stats">
                     <i class="material-icons text-danger">warning</i>
-                    <a href="#pablo">Get More Space...</a>
+                    <a href="#pablo">View all products</a>
                   </div>
                 </div>
               </div>
@@ -34,8 +36,12 @@
                   <div class="card-icon">
                     <i class="material-icons">store</i>
                   </div>
-                  <p class="card-category">Revenue</p>
-                  <h3 class="card-title">$34,245</h3>
+                  <p class="card-category">Total no. of Groups</p>
+                  <h3 class="card-title">
+                      @foreach($count_group as $group)
+                        {{$group->count_group}}
+                      @endforeach
+                  </h3>
                 </div>
                 <div class="card-footer">
                   <div class="stats">
@@ -50,8 +56,12 @@
                   <div class="card-icon">
                     <i class="material-icons">info_outline</i>
                   </div>
-                  <p class="card-category">Fixed Issues</p>
-                  <h3 class="card-title">75</h3>
+                  <p class="card-category">Total Users</p>
+                  <h3 class="card-title">
+                      @foreach($count_user as $user)
+                        {{$user->count_user}}
+                      @endforeach
+                  </h3>
                 </div>
                 <div class="card-footer">
                   <div class="stats">

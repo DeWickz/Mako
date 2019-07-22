@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Order;
 use App\User;
 use Illuminate\Http\Request;
-
+use DB;
 
 class OrderController extends Controller
 {
@@ -16,8 +16,25 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::all();
-        return view('admin.orders.index', compact('orders'));
+        if(auth()->user()->hasRole("admin")){
+            $orders= DB::table('orders')
+            ->paginate(5);
+
+
+            return view('admin.orders.index',compact('orders'));
+        }
+        else
+        {
+            return view('errors');
+        }
+
+
+
+
+
+
+        // $orders = Order::all();
+        // return view('admin.orders.index', compact('orders'));
 
     }
 

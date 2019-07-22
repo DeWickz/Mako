@@ -1,13 +1,18 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Product;
 use App\Group;
+use DB;
 use App\Cart;
+use App\CartItem;
+use Session;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Gloudemans\Shoppingcart\Facades\Cart as ShoppingCart;
 
 class CartController extends Controller
 {
@@ -18,9 +23,31 @@ class CartController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
-        return view('admin.products.index',compact('products'));
+        $user_ids = DB::table('shoppingcart')
+        ->select('identifier')
+        ->get();
+
+        $user_names = DB::table('users')
+        ->join('shoppingcart', 'users.id', '=', 'shoppingcart.identifier')
+        ->select('users.user_firstname','users.user_lastname','shoppingcart.identifier')
+        ->get();
+        return view('admin.cart.index',compact('user_ids','user_names'));
+
     }
+
+    public function editCart($identifier)
+    {
+        // $username = DB::table('users')
+        // ->where('id','=',$identifier)
+        // ->get();
+
+        // ShoppingCart::restore($identifier);
+
+        // dd(ShoppingCart::content());
+        // return view('admin.cart.editcart',compact('username'));
+        return back();
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -40,14 +67,14 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
-        $car = new Cart;
-        $car->product_id = $request->input('product_id');
-        $car->user_id = $request->input('user_id');
+        // dd($request);
+        // $car = new Cart::;
+        // $car->product_id = $request->input('product_id');
+        // $car->user_id = $request->input('user_id');
 
-        $car->save();
-        Alert::success('Item added into cart', '1 item added');
-        return  redirect()->route('admin.products.edit');
+        // $car->save();
+        // Alert::success('Item added into cart', '1 item added');
+        // return  redirect()->route('admin.products.edit');
     }
 
     /**
@@ -67,9 +94,42 @@ class CartController extends Controller
      * @param  \App\Cart  $cart
      * @return \Illuminate\Http\Response
      */
-    public function edit(Cart $cart)
+    public function edit($user_id)
     {
-        //
+        // dd($cart_items);
+        $cart_items= DB::table('cart_items')
+        ->where('user_id','=',$user_id)
+        ->paginate(5);
+
+        $product_id = DB::table('cart_items')
+        ->select('product_id')
+        ->groupBy('product_id')
+        ->get();
+
+        $product_id->toArray();
+
+        $cart_user = DB::table('users')
+        ->select('user_firstname','user_lastname')
+        ->where('id','=',$user_id)
+        ->get();
+
+        $products = collect();
+
+        foreach($product_id as $id)
+        {
+            $product = DB::table('products')
+            ->select('product_name','id')
+            ->where('id','=',(array)$id)
+            ->get();
+
+            $products->push($product);
+        }
+
+        $cartproducts = $products->collapse();
+
+        // dd($cartproducts);
+
+        return view('admin.cart.editcart', compact('cart_items','cart_user','product_id','cartproducts'));
     }
 
     /**
@@ -90,17 +150,32 @@ class CartController extends Controller
      * @param  \App\Cart  $cart
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Cart $cart)
+    public function destroy($id)
     {
-        //
+        $cart_items = DB::table('cart_items')
+        ->where('product_id','=',$id)
+        ->delete();
+
+        $oldCart = Session::has('cart') ? Session::get('cart') : null;
+        $cart = new Cart($oldCart);
+        $cart->removeItem($id);
+
+        if(count($cart->items) > 0)
+        {
+            Session::put('cart',$cart);
+        }
+        else
+        {
+            Session::forget('cart');
+        }
+
+        return back();
     }
+
 
     public function add(Request $request)
-    {
-        $add = Cart::add([
-            'id'=> $request->id,
-            'product_name'=>$request->product_name,
+    {}
 
-        ]);
-    }
+    public function addtocart()
+    {}
 }

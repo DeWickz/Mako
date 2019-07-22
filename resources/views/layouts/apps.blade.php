@@ -4,10 +4,10 @@
 <head>
   <meta charset="utf-8" />
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <link rel="icon" type="image/png" href="/user_asset/images/icons/camera_lens.png"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-    Material Dashboard by Creative Tim
+    Admin
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
@@ -29,8 +29,8 @@
         Tip 2: you can also add an image using data-image tag
     -->
       <div class="logo">
-        <a href="{{ url('/') }}" class="simple-text logo-normal">
-          Moka
+        <a class="navbar-brand" href="{{ url('/') }}">
+            <img src="/user_asset/images/icons/mokaLogo3.png" class="pl-3" style="height: 20px">
         </a>
       </div>
       <div class="sidebar-wrapper">
@@ -70,6 +70,13 @@
             </a>
           </li>
 
+          {{-- <li class="nav-item ">
+            <a class="nav-link" href="{{ route('admin.carts.index') }}">
+              <i class="material-icons">shopping_cart</i>
+              <p>Carts</p>
+            </a>
+          </li> --}}
+
       </div>
     </div>
     <div class="main-panel">
@@ -81,7 +88,7 @@
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <a class="navbar-brand" href="#pablo">Dashboard</a>
+            <a class="navbar-brand" href="/">Dashboard</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
@@ -102,13 +109,13 @@
             <ul class="navbar-nav">
               <li class="nav-item">
                 <a class="nav-link" href="/">
-                  <i class="material-icons">dashboard</i>
+                  <i class="material-icons">home</i>
                   <p class="d-lg-none d-md-block">
                     Stats
                   </p>
                 </a>
               </li>
-              <li class="nav-item dropdown">
+              {{-- <li class="nav-item dropdown">
                 <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="material-icons">notifications</i>
                   <span class="notification">5</span>
@@ -122,7 +129,7 @@
                   <a class="dropdown-item" href="#">You're now friend with Andrew</a>
                   <a class="dropdown-item" href="#">Another Notification</a>
                   <a class="dropdown-item" href="#">Another One</a>
-                </div>
+                </div> --}}
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link" href="#pablo" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -136,12 +143,12 @@
                        onclick="event.preventDefault();
                        document.getElementById('logout-form').submit();">
                         {{ __('Logout') }}
-                         </a>
+                    </a>
 
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                         @csrf
-                        </form>
-                        </div>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                    </form>
+                </div>
               </li>
             </ul>
           </div>

@@ -13,7 +13,7 @@
     <div class="col-2 pr-1">
 	@role('admin')
         <a href="{{ Route('admin.products.create') }}"class="nav-link btn btn-success">ADD Product</a>
-		 @endrole
+    @endrole
     </div>
 </div>
 
@@ -47,8 +47,8 @@
           <td>{{ $product->product_group }}</td>
           <td>{{ $product->group_id}}</td>
           <td>
-          @role('admin')
-          <a href="{{ Route('admin.products.edit', $product->id) }}" class="btn btn-info">Edit</a>
+          @role('admin')<a href="{{ Route('admin.products.edit', $product->id) }}" class="btn btn-info">Edit</a>
+
           <form method="POST" action="{{ route('admin.products.destroy',$product->id) }}">
             @csrf
             {{ method_field('DELETE') }}
@@ -57,8 +57,8 @@
           @endrole
           {{-- @role('customer') --}}
 
-          <form method="POST" action="{{ route('admin.cart.store',$product->id) }}">
-            <input type="submit" value="Bug" onclick="return confirm('BUGSSSS')" class="btn btn-facebook"/>
+          <form method="POST" action="{{ route('admin.products.store',$product->id) }}">
+            <input type="submit" value="Bug" onclick="return confirm(' ')" class="btn btn-facebook"/>
           </form>
 
           {{-- @endrole --}}
@@ -70,7 +70,7 @@
 
 
 </table>
-
+{{ $products->links() }}
 
 
 </html>

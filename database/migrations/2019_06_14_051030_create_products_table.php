@@ -18,7 +18,7 @@ class CreateProductsTable extends Migration
             $table->unsignedInteger('group_id');
             $table->string('product_name');
             $table->string('product_code');
-            $table->float('product_price');
+            $table->unsignedDecimal('product_price');
             $table->string('product_detail');
             $table->string('product_createdBy');
             $table->string('product_brand');

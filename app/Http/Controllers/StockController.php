@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Stock;
 use App\User;
 use Illuminate\Http\Request;
+use DB;
+
 
 class StockController extends Controller
 {
@@ -15,8 +17,23 @@ class StockController extends Controller
      */
     public function index()
     {
-        $stocks = stock::all();
-        return view('admin.stocks.index', compact('stocks'));
+        if(auth()->user()->hasRole("admin")){
+            $stocks= DB::table('stocks')
+            ->paginate(5);
+
+
+            return view('admin.stocks.index',compact('stocks'));
+        }
+        else
+        {
+            return view('errors');
+        }
+
+
+
+
+        // $stocks = stock::all();
+        // return view('admin.stocks.index', compact('stocks'));
     }
 
     /**

@@ -45,7 +45,9 @@
           <td>{{ $product->product_createdBy }}</td>
           <td>{{ $product->product_brand }}</td>
           <td>{{ $product->product_group }}</td>
-          <td>{{ $product->group_id}}</td>
+          <td>
+
+          </td>
 
       </tr>
     @endforeach

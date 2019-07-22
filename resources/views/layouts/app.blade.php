@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
+<link>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -26,7 +26,7 @@
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-    Material Dashboard by Creative Tim
+    Admin
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
@@ -36,14 +36,14 @@
   <link href="../assets/css/material-dashboard.css?v=2.1.1" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="../assets/demo/demo.css" rel="stylesheet" />
-</head>
+</link>
 
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    Moka
+                <img src="/user_asset/images/icons/mokaLogo3.png" class="pl-3" style="height: 20px">
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -67,16 +67,16 @@
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
                             @endif
-                        <!-- @else
-                        
+                         @else
+
                             @role('admin')
                                 <li><a href="{{ route('admin.admin_dashboard.index') }}" class="nav-link">Admin Dashboard</a></li>
-                            @endrole 
+                            @endrole
 
                             @can('view_product')
-                                <li><a href="{{ route('admin.addproduct.index') }}" class="nav-link">Products</a></li>
+                                <li><a href="{{ route('showproducts') }}" class="nav-link">Products</a></li>
                             @endcan()
-                            
+
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->user_firstname }} <span class="caret"></span>
@@ -97,7 +97,7 @@
                         @endguest
                     </ul>
                 </div>
-            </div> -->
+            </div>
         </nav>
 
         <main class="py-4">

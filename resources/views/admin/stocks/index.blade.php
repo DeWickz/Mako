@@ -61,7 +61,7 @@
 
 
 </table>
-
+{{ $stocks->links() }}
 
 
 </html>

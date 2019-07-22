@@ -14,9 +14,19 @@ class CreateAddressesTable extends Migration
     public function up()
     {
         Schema::create('addresses', function (Blueprint $table) {
-            $table->bigIncrements('address_id');
-            $table->string('address_user_id');
-            $table->string('address_address');
+            $table->bigIncrements('id');
+            $table->unsignedInteger('user_id');
+            $table->string('address_owner');
+            $table->unsignedInteger('address_phone');
+            $table->string('address_moo');
+            $table->string('address_soi');
+            $table->string('address_houseNo');
+            $table->string('address_district');
+            $table->string('address_province');
+            $table->string('address_city');
+            $table->string('address_state');
+            $table->string('address_country');
+            $table->string('address_postal_code');
             $table->timestamps();
         });
     }

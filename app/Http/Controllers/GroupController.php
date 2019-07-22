@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Group;
 use App\Product;
+use DB;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -18,8 +19,21 @@ class GroupController extends Controller
      */
     public function index()
     {
-        $groups = Group::all();
-        return view('admin.groups.index', compact('groups'));
+        if(auth()->user()->hasRole("admin")){
+            $groups= DB::table('groups')
+            ->paginate(5);
+
+            return view('admin.groups.index',compact('groups'));
+        }
+        else
+        {
+            return view('errors');
+        }
+
+
+
+        // $groups = Group::all();
+        // return view('admin.groups.index', compact('groups'));
     }
 
 
@@ -99,6 +113,7 @@ class GroupController extends Controller
      * @param  \App\Group  $group
      * @return \Illuminate\Http\Response
      */
+
     public function destroy(Group $group)
     {
         $group->delete();
