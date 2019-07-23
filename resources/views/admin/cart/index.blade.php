@@ -13,7 +13,7 @@
 <table class="table table-bordered">
     <thead>
         <tr>
-          <th>Carts</th>
+          <th class="font-weight-bold">Carts</th>
 
         </tr>
     </thead>
@@ -26,7 +26,7 @@
                     {{$user->user_firstname}} {{$user->user_lastname}}
                 </a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{{route('editCart',$user->identifier)}}">Edit Cart</a>
+                    <a class="dropdown-item" href="{{route('editCart',$user->identifier)}}">View Cart</a>
                 </div>
             </td>
             {{-- href="{{route('admin.carts.edit',$ci->user_id)}} --}}

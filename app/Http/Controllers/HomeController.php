@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Product;
+use DB;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -24,14 +25,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        auth()->user()->assignRole('admin');
+        // auth()->user()->assignRole('admin');
         if(auth()->user()->hasRole('admin'))
         {
             auth()->user()->syncPermissions(['add_product','delete_product','edit_product','view_product','view_order']);
             $products = DB::table('products')
             ->select(DB::raw('count(*) as products_count'))
             ->get();
-            return view('adminhome','products');
+            return view('adminhome',compact('products'));
         }
         else
         {

@@ -31,21 +31,39 @@ class CartController extends Controller
         ->join('shoppingcart', 'users.id', '=', 'shoppingcart.identifier')
         ->select('users.user_firstname','users.user_lastname','shoppingcart.identifier')
         ->get();
+
         return view('admin.cart.index',compact('user_ids','user_names'));
 
     }
 
     public function editCart($identifier)
     {
-        // $username = DB::table('users')
-        // ->where('id','=',$identifier)
-        // ->get();
+        $username = DB::table('users')
+        ->where('id','=',$identifier)
+        ->get();
 
-        // ShoppingCart::restore($identifier);
+        ShoppingCart::restore($identifier);
 
-        // dd(ShoppingCart::content());
+        $basket = DB::table('shoppingcart')
+        ->where('identifier','=',$identifier)
+        ->get();
+
+        if($basket->isEmpty())
+        {
+            ShoppingCart::store($identifier);
+            // dd(ShoppingCart::instance('current_cart')->content());
+            return view('admin.cart.editcart',compact('username'));
+        }
+        else
+        {
+            DB::table('shoppingcart')
+            ->where('identifier', '=', $identifier)->delete();
+            ShoppingCart::store($identifier);
+            // dd(ShoppingCart::instance('current_cart')->content());
+            return view('admin.cart.editcart',compact('username'));
+        }
+        // STILL BROKEN SEND HALP
         // return view('admin.cart.editcart',compact('username'));
-        return back();
     }
 
 

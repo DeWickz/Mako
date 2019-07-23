@@ -109,7 +109,7 @@
 
               <li class="nav-item dropdown">
                 <a class="nav-link" href="shoppingCart" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="material-icons">notifications</i>
+                    <i class="material-icons">shopping_cart</i>
                     <span class="notification">{{Cart::count()}}</span>
                     <p class="d-lg-none d-md-block">
                     </p>
@@ -170,69 +170,6 @@
                 </div>
               </li>
 
-              {{-- <div class="header-wrapicon2">
-
-                    <img src="/user_asset/images/icons/icon-header-02.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
-                        <span class="header-icons-noti">{{Session::has('cart') ?
-                        Session::get('cart')->totalQty : ''}}
-                        </span>
-
-
-                    <!-- Header cart noti -->
-                    <div class="header-cart header-dropdown">
-                        <ul class="header-cart-wrapitem">
-                            @if(!Session::has('cart'))
-                            <li class="header-cart-item">
-                                <h1>No items in cart</h1>
-                            </li>
-
-                            @else
-                        @foreach($products as $product)
-                            <li class="header-cart-item">
-                                <div class="header-cart-item-img">
-                                    <img src="/user_asset/images/item-cart-01.jpg" alt="IMG">
-                                </div>
-
-                                <div class="header-cart-item-txt">
-                                    <a href="#" class="header-cart-item-name">
-                                        {{$product['item']['product_name']}}
-                                    </a>
-
-                                    <span class="header-cart-item-info">
-                                ‎        ฿ {{$product['price']}} x {{$product['qty']}}
-                                    </span>
-                                </div>
-                            </li>
-                            @endforeach
-
-                        </ul>
-
-
-                        <div class="header-cart-total">
-                            @foreach($total as $totals)
-                            Total: ฿ {{$totals}}
-                            @endforeach
-                        </div>
-                        @endif
-
-                        <div class="header-cart-buttons">
-                            <div class="header-cart-wrapbtn">
-                                <!-- Button -->
-                                <a href="shoppingCart" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
-                                    View Cart
-                                </a>
-                            </div>
-
-                            <div class="header-cart-wrapbtn">
-                                <!-- Button -->
-                                <a href="{{route('checkout')}}" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
-                                    Check Out
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
-
               <li class="nav-item dropdown">
                 <a class="nav-link" href="#pablo" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="material-icons">person</i>
@@ -259,6 +196,8 @@
 
       </nav>
       <!-- End Navbar -->
+
+
 
         @yield('content')
 

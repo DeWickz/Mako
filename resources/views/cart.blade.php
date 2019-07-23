@@ -38,9 +38,9 @@
                             </div>
                         </td>
                         <td class="column-2">
-                                <a class="header-cart-item-name">
+                            <a href="{{ route('productsWelcome2.show', ['id' => $product->id]) }}" class="header-cart-item-name">
                                     {{$product->name}}
-                                </a>
+                            </a>
                         </td>
                         <td class="column-3">‎฿ {{$product->price}}</td>
                         <td class="column-4">
@@ -73,7 +73,7 @@
             <div class="size10 trans-0-4 m-t-10 m-b-10">
                 <!-- Button -->
                 <button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
-                    <a href="{{route('updateCart')}}" style="Color:whit">Update Cart</a>
+                    <a href="{{route('updateCart')}}" style="Color:white">Update Cart</a>
                 </button>
             </div>
         </div>

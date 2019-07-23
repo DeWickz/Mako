@@ -20,27 +20,19 @@
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th width = 500>Product Name</th>
-            <th width = 500>Action</th>
+            <th width = 400 class="font-weight-bold">Product Name</th>
+            <th width = 400 class="font-weight-bold">Quantity</th>
         </tr>
     </thead>
-        {{-- foreach --}}
+        @foreach(Cart::content() as $product)
         <tr>
-            <td>product name</td>
-
-            <td>
-
-            <form method="POST">
-            {{-- action="{{ route('admin.carts.destroy',$product->id) }}"   --}}
-             @csrf
-                {{ method_field('DELETE') }}
-                <input type="submit" value="Delete" onclick="return confirm('Are you sure?')" class="btn btn-danger"/>
-            </form>
-
-            </td>
-
+            <td>{{$product->name}}</td>
+            <td>{{$product->qty}}</td>
+            {{-- <td>
+                <a type="button" class="btn btn-secondary" href="{{route('cart.delete', ['id' => $product->rowId])}}">Remove</a>
+            </td> --}}
         </tr>
-        {{-- endforeach --}}
+        @endforeach
     </tbody>
 
 

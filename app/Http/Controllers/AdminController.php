@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
+use App\Group;
 use Gloudemans\Shoppingcart\Facades\Cart as ShoppingCart;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -20,6 +21,15 @@ class AdminController extends Controller
 
         // auth()->user()->assignRole('admin');
         // auth()->user()->assignRole('customer');
+        $groups = Group::all();
+
+        $user_id = Auth::id();
+
+        $user_detail = DB::table('users')
+        ->where('id','=',$user_id)
+        ->get();
+
+        ShoppingCart::restore(Auth::id());
 
         if(auth()->user()->hasRole("admin")){
             auth()->user()->syncPermissions(['add_product','delete_product','edit_product','view_product','view_order']);
@@ -38,17 +48,14 @@ class AdminController extends Controller
 
             // dd($count_product);
 
-            ShoppingCart::restore(Auth::id());
-            DB::table('shoppingcart')
-            ->where('identifier', '=', Auth::id())->delete();
-            return view('adminhome',compact('count_user','count_product','count_group'));
+            ShoppingCart::store(Auth::id());
+
+            return view('adminhome',compact('count_user','count_product','count_group','groups','user_detail'));
         }
         else{
-            ShoppingCart::restore(Auth::id());
-            DB::table('shoppingcart')
-            ->where('identifier', '=', Auth::id())->delete();
+            ShoppingCart::store(Auth::id());
             auth()->user()->givePermissionTo('view_product');
-            return view('home');
+            return view('home',compact('groups','user_detail'));
         }
 
 

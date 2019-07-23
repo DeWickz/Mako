@@ -40,25 +40,96 @@ class CartItemController extends Controller
 
         $groups = Group::all();
         // ShoppingCart::store(Auth::id());
-        return view('cart', compact('groups','user_detail'));
+
+        $basket = DB::table('shoppingcart')
+        ->where('identifier','=',Auth::id())
+        ->get();
+
+        if($basket->isEmpty())
+        {
+            ShoppingCart::store(Auth::id());
+            return view('cart', compact('groups','user_detail'));
+        }
+        else
+        {
+            DB::table('shoppingcart')
+            ->where('identifier', '=', Auth::id())->delete();
+            ShoppingCart::store(Auth::id());
+            return view('cart', compact('groups','user_detail'));
+        }
     }
 
     public function cart_delete($id)
     {
         ShoppingCart::remove($id);
-        return back();
+
+        $basket = DB::table('shoppingcart')
+        ->where('identifier','=',Auth::id())
+        ->get();
+
+        if($basket->isEmpty())
+        {
+            ShoppingCart::store(Auth::id());
+
+            return back();
+        }
+        else
+        {
+            DB::table('shoppingcart')
+            ->where('identifier', '=', Auth::id())->delete();
+            ShoppingCart::store(Auth::id());
+
+            return back();
+        }
     }
 
     public function incr($id, $qty)
     {
         ShoppingCart::update($id, $qty + 1);
-        return back();
+
+        $basket = DB::table('shoppingcart')
+        ->where('identifier','=',Auth::id())
+        ->get();
+
+        if($basket->isEmpty())
+        {
+            ShoppingCart::store(Auth::id());
+
+            return back();
+        }
+        else
+        {
+            DB::table('shoppingcart')
+            ->where('identifier', '=', Auth::id())->delete();
+            ShoppingCart::store(Auth::id());
+
+            return back();
+        }
+
     }
 
     public function decr($id, $qty)
     {
         ShoppingCart::update($id, $qty - 1);
-        return back();
+
+        $basket = DB::table('shoppingcart')
+        ->where('identifier','=',Auth::id())
+        ->get();
+
+        if($basket->isEmpty())
+        {
+            ShoppingCart::store(Auth::id());
+
+            return back();
+        }
+        else
+        {
+            DB::table('shoppingcart')
+            ->where('identifier', '=', Auth::id())->delete();
+            ShoppingCart::store(Auth::id());
+
+            return back();
+        }
     }
 
     public function upd()

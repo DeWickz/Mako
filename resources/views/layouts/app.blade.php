@@ -1,161 +1,660 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<link>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en">
+<head>
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Moka</title>
+    <meta charset="UTF-8">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+	<link rel="icon" type="image/png" href="images/icons/camera_lens.png"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/themify/themify-icons.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/elegant-font/html-css/style.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/slick/slick.css">
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/user_asset/css/util.css">
+	<link rel="stylesheet" type="text/css" href="/user_asset/css/main.css">
+<!--===============================================================================================-->
 
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/dropzone.css' ) }}" rel="stylesheet">
-    <script src="{{ asset('js/dropzone') }}"></script>
 
-    <meta charset="utf-8" />
-  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <title>
-    Admin
-  </title>
-  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
-  <!--     Fonts and icons     -->
-  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
-  <!-- CSS Files -->
-  <link href="../assets/css/material-dashboard.css?v=2.1.1" rel="stylesheet" />
-  <!-- CSS Just for demo purpose, don't include it in your project -->
-  <link href="../assets/demo/demo.css" rel="stylesheet" />
-</link>
 
-<body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                <img src="/user_asset/images/icons/mokaLogo3.png" class="pl-3" style="height: 20px">
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
 
+
+<!-- CSS Files -->
+<link href="../assets/css/material-dashboard.css?v=2.1.1" rel="stylesheet" />
+
+
+</head>
+
+
+<body class="animsition">
+   <!-- Header -->
+	<header class="header1">
+            <!-- Header desktop -->
+            <div class="container-menu-header">
+                <div class="topbar">
+                    <div class="topbar-social">
+                        <a href="#" class="topbar-social-item fa fa-facebook"></a>
+                        <a href="#" class="topbar-social-item fa fa-instagram"></a>
+                        <a href="#" class="topbar-social-item fa fa-pinterest-p"></a>
+                        <a href="#" class="topbar-social-item fa fa-snapchat-ghost"></a>
+                        <a href="#" class="topbar-social-item fa fa-youtube-play"></a>
+                    </div>
+
+                    <span class="topbar-child1">
+                        MOKA
+                    </span>
+
+
+                </div>
+
+                <div class="wrap_header">
+                    <!-- Logo -->
+                    <!--หมอแก้-->
+                    <a href="/" class="logo">
+                        <img src="/user_asset/images/icons/mokaLogo3.png" alt="IMG-LOGO">
+                    </a>
+
+
+
+
+            <!-- Menu -->
+            <div class="wrap_menu">
+                <nav class="menu">
+                    <ul class="main_menu">
+                        <li>
+                            <a href="{{route('showproducts')}}">Products</a>
+                            <ul class="sub_menu">
+                                @foreach($groups as $group)
+                                <li><a href="{{ route('productsWelcome.show', $group->id) }}">
+                                    {{$group->group_name}}
+                                @endforeach
+                                </a></li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="{{route('showproducts')}}">Shop</a>
+                        </li>
+
+                        <li class="sale-noti">
+                            <a href="product.html">Sale</a>
+                        </li>
+
+                        <li>
+                            <a href="cart.html">Features</a>
+                        </li>
+
+                        <li>
+                            <a href="blog.html">Blog</a>
+                        </li>
+
+                        <li>
+                            <a href="about.html">About</a>
+                        </li>
+
+                        <li>
+                            <a href="contact.html">Contact</a>
+                        </li>
                     </ul>
+                </nav>
+            </div>
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                         @else
+            <!-- Header Icon -->
+            <div class="header-icons">
+                 @guest
+                        @if (Route::has('login'))
+                        <div class="wrap_menu pt-1">
+                                <nav class="menu">
+                                    <ul class="main_menu">
+                                        <li>
+                                            <img src="/user_asset/images/icons/icon-header-01.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
 
+                                            <ul class="sub_menu">
+                                                <li><a href="{{ route('login') }}">
+                                                    Login{{-- <img src="/user_asset/images/icons/icon-header-01.png" class="header-icon1" alt="ICON"> --}}
+                                                </a>
+                                                </li>
+                                                <li><a href="{{ route('register') }}">
+                                                    Register
+                                                </a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                    @endguest
+                        @else
                             @role('admin')
-                                <li><a href="{{ route('admin.admin_dashboard.index') }}" class="nav-link">Admin Dashboard</a></li>
+                            <div class="wrap_menu pt-1">
+                                <nav class="menu">
+                                    <ul class="main_menu">
+                                        <li>
+                                            <img src="/user_asset/images/icons/icon-header-03.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
+
+                                            <ul class="sub_menu">
+                                                <li><a href={{route('profile.userinfo')}}>
+                                                    @foreach($user_detail as $user)
+                                                    {{$user->user_firstname}}'s  Profile
+                                                    @endforeach
+                                                </a></li>
+                                                <li><a href="{{route('adminhome')}}">
+                                                    Admin Dashboard
+                                                </a></li>
+                                                <li><a class="dropdown-item" href="{{ route('logout') }}"
+                                                    onclick="event.preventDefault();
+                                                    document.getElementById('logout-form').submit();">
+                                                     {{ __('Logout') }}
+                                                 </a>
+
+                                                 <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                                                 @csrf
+                                                 </form></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
                             @endrole
+                            @role('customer')
+                            <div class="wrap_menu pt-1">
+                                    <nav class="menu">
+                                        <ul class="main_menu">
+                                            <li>
+                                                <img src="/user_asset/images/icons/icon-header-03.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
 
-                            @can('view_product')
-                                <li><a href="{{ route('showproducts') }}" class="nav-link">Products</a></li>
-                            @endcan()
+                                                <ul class="sub_menu">
+                                                    <li><a href="{{route('profile.userinfo')}}">
+                                                        Profile
+                                                    </a></li>
+                                                    <li><a class="dropdown-item" href="{{ route('logout') }}"
+                                                        onclick="event.preventDefault();
+                                                        document.getElementById('logout-form').submit();">
+                                                         {{ __('Logout') }}
+                                                     </a>
 
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->user_firstname }} <span class="caret"></span>
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
+                                                     <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                                                     @csrf
+                                                     </form></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </nav>
                                 </div>
-                            </li>
-                        @endguest
-                    </ul>
+                            @endrole
+                        @endif
+
+                        <span class="linedivide1"></span>
+
+                        <div class="header-wrapicon2">
+
+                            <img src="/user_asset/images/icons/icon-header-02.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
+                                <span class="header-icons-noti"> {{Cart::count()}}
+                                </span>
+
+
+                            <!-- Header cart noti -->
+                            <div class="header-cart header-dropdown">
+                                <ul class="header-cart-wrapitem">
+                                @if(Cart::count()==0)
+                                    <li class="header-cart-item">
+                                        <h1>No items in cart</h1>
+                                    </li>
+
+                                @else
+                                @foreach(Cart::content() as $product)
+                                    <li class="header-cart-item">
+                                        <div class="header-cart-item-img">
+                                            <img src="/user_asset/images/item-cart-01.jpg" alt="IMG">
+                                        </div>
+
+                                        <div class="header-cart-item-txt">
+                                            <a href="{{ route('productsWelcome2.show', $product->id) }}" class="header-cart-item-name">
+                                                {{$product->name}}
+                                            </a>
+
+                                            <span class="header-cart-item-info">
+                                        ‎        ฿ {{$product->price}} x {{$product->qty}}
+                                            </span>
+                                        </div>
+                                    </li>
+                                @endforeach
+
+                                </ul>
+
+
+                                <div class="header-cart-total align-left">
+                                    Total: ฿{{Cart::total()}}
+                                </div>
+                                @endif
+
+
+
+                                <div class="header-cart-buttons">
+                                    <!-- Button -->
+                                    <a href="{{route('cart')}}" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+                                        View Cart
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </nav>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
-    </div>
 
-<!--   Core JS Files   -->
-<script src="../assets/js/core/jquery.min.js"></script>
-  <script src="../assets/js/core/popper.min.js"></script>
-  <script src="../assets/js/core/bootstrap-material-design.min.js"></script>
-  <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-  <!-- Plugin for the momentJs  -->
-  <script src="../assets/js/plugins/moment.min.js"></script>
-  <!--  Plugin for Sweet Alert -->
-  <script src="../assets/js/plugins/sweetalert2.js"></script>
-  <!-- Forms Validations Plugin -->
-  <script src="../assets/js/plugins/jquery.validate.min.js"></script>
-  <!-- Plugin for the Wizard, full documentation here: https://github.com/VinceG/twitter-bootstrap-wizard -->
-  <script src="../assets/js/plugins/jquery.bootstrap-wizard.js"></script>
-  <!--	Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
-  <script src="../assets/js/plugins/bootstrap-selectpicker.js"></script>
-  <!--  Plugin for the DateTimePicker, full documentation here: https://eonasdan.github.io/bootstrap-datetimepicker/ -->
-  <script src="../assets/js/plugins/bootstrap-datetimepicker.min.js"></script>
-  <!--  DataTables.net Plugin, full documentation here: https://datatables.net/  -->
-  <script src="../assets/js/plugins/jquery.dataTables.min.js"></script>
-  <!--	Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
-  <script src="../assets/js/plugins/bootstrap-tagsinput.js"></script>
-  <!-- Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
-  <script src="../assets/js/plugins/jasny-bootstrap.min.js"></script>
-  <!--  Full Calendar Plugin, full documentation here: https://github.com/fullcalendar/fullcalendar    -->
-  <script src="../assets/js/plugins/fullcalendar.min.js"></script>
-  <!-- Vector Map plugin, full documentation here: http://jvectormap.com/documentation/ -->
-  <script src="../assets/js/plugins/jquery-jvectormap.js"></script>
-  <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
-  <script src="../assets/js/plugins/nouislider.min.js"></script>
-  <!-- Include a polyfill for ES6 Promises (optional) for IE11, UC Browser and Android browser support SweetAlert -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
-  <!-- Library for adding dinamically elements -->
-  <script src="../assets/js/plugins/arrive.min.js"></script>
-  <!--  Google Maps Plugin    -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-  <!-- Chartist JS -->
-  <script src="../assets/js/plugins/chartist.min.js"></script>
-  <!--  Notifications Plugin    -->
-  <script src="../assets/js/plugins/bootstrap-notify.js"></script>
-  <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="../assets/js/material-dashboard.js?v=2.1.1" type="text/javascript"></script>
-  <!-- Material Dashboard DEMO methods, don't include it in your project! -->
-  <script src="../assets/demo/demo.js"></script>
 
-  <script>
-    $(document).ready(function() {
-      // Javascript method's body can be found in assets/js/demos.js
-      md.initDashboardPageCharts();
+           	<!-- Header Mobile -->
+		<div class="wrap_header_mobile">
+			<!-- Logo moblie -->
+			<a href="/" class="logo-mobile">
+                <img src="/user_asset/images/icons/mokaLogo3.png" alt="IMG-LOGO">
+			</a>
 
-    });
-  </script>
+			<!-- Button show menu -->
+			<div class="btn-show-menu">
+
+
+                <!-- Header Icon mobile -->
+
+                <div class="header-icons-mobile">
+                 @guest
+                        @if (Route::has('login'))
+                        <div class="wrap_menu pt-1">
+                                <nav class="menu">
+                                    <ul class="main_menu">
+                                        <li>
+                                            <img src="/user_asset/images/icons/icon-header-01.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
+
+                                            <ul class="sub_menu">
+                                                <li><a href="{{ route('login') }}">
+                                                    Login{{-- <img src="/user_asset/images/icons/icon-header-01.png" class="header-icon1" alt="ICON"> --}}
+                                                </a>
+                                                </li>
+                                                <li><a href="{{ route('register') }}">
+                                                    Register
+                                                </a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                    @endguest
+                        @else
+                            @role('admin')
+                            <div class="wrap_menu pt-1">
+                                <nav class="menu">
+                                    <ul class="main_menu">
+                                        <li>
+                                            <img src="/user_asset/images/icons/icon-header-03.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
+
+                                            <ul class="sub_menu">
+                                                <li><a href={{route('profile.userinfo')}}>
+                                                    @foreach($user_detail as $user)
+                                                    {{$user->user_firstname}}'s  Profile
+                                                    @endforeach
+                                                </a></li>
+                                                <li><a href="{{route('adminhome')}}">
+                                                    Admin Dashboard
+                                                </a></li>
+                                                <li><a class="dropdown-item" href="{{ route('logout') }}"
+                                                    onclick="event.preventDefault();
+                                                    document.getElementById('logout-form').submit();">
+                                                     {{ __('Logout') }}
+                                                 </a>
+
+                                                 <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                                                 @csrf
+                                                 </form></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                            @endrole
+                            @role('customer')
+                            <div class="wrap_menu pt-1">
+                                    <nav class="menu">
+                                        <ul class="main_menu">
+                                            <li>
+                                                <img src="/user_asset/images/icons/icon-header-03.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
+
+                                                <ul class="sub_menu">
+                                                    <li><a href="{{route('profile.userinfo')}}">
+                                                        Profile
+                                                    </a></li>
+                                                    <li><a class="dropdown-item" href="{{ route('logout') }}"
+                                                        onclick="event.preventDefault();
+                                                        document.getElementById('logout-form').submit();">
+                                                         {{ __('Logout') }}
+                                                     </a>
+
+                                                     <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                                                     @csrf
+                                                     </form></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            @endrole
+                        @endif
+
+                <span class="linedivide2"></span>
+
+                <div class="header-wrapicon2">
+
+                    <img src="/user_asset/images/icons/icon-header-02.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
+                        <span class="header-icons-noti"> {{Cart::count()}}
+                        </span>
+
+
+
+						<!-- Header cart noti -->
+						<div class="header-cart header-dropdown">
+							<ul class="header-cart-wrapitem">
+
+                            @if(Cart::count()==0)
+                                    <li class="header-cart-item">
+                                        <h1>No items in cart</h1>
+                                    </li>
+
+                            @else
+                            @foreach(Cart::content() as $product)
+
+								<li class="header-cart-item">
+                                <div class="header-cart-item-img">
+                                            <img src="/user_asset/images/item-cart-01.jpg" alt="IMG">
+                                        </div>
+
+                                        <div class="header-cart-item-txt">
+                                            <a href="{{ route('productsWelcome2.show', $product->id) }}"  class="header-cart-item-name">
+                                                {{$product->name}}
+                                            </a>
+
+                                            <span class="header-cart-item-info">
+                                        ‎        ฿ {{$product->price}} x {{$product->qty}}
+                                            </span>
+                                        </div>
+                                    </li>
+                                    @endforeach
+                                </ul>
+
+
+                                <div class="header-cart-total align-left">
+                                    Total: ฿{{Cart::total()}}
+                                </div>
+                                @endif
+
+
+                                <div class="header-cart-buttons">
+                                    <!-- Button -->
+                                    <a href="{{route('cart')}}" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+                                        View Cart
+                                    </a>
+                                </div>
+						</div>
+					</div>
+				</div>
+
+
+	</header>
+@yield('content')
+
+
+<!-- Footer -->
+<footer class="bg6 p-t-45 p-b-43 p-l-45 p-r-45">
+		<div class="flex-w p-b-90">
+			<div class="w-size6 p-t-30 p-l-15 p-r-15 respon3">
+				<h4 class="s-text12 p-b-30">
+					GET IN TOUCH
+				</h4>
+
+				<div>
+					<p class="s-text7 w-size27">
+						Any questions? Let us know in store at 8th floor, 379 Hudson St, New York, NY 10018 or call us on (+1) 96 716 6879
+					</p>
+
+					<div class="flex-m p-t-30">
+						<a href="#" class="fs-18 color1 p-r-20 fa fa-facebook"></a>
+						<a href="#" class="fs-18 color1 p-r-20 fa fa-instagram"></a>
+						<a href="#" class="fs-18 color1 p-r-20 fa fa-pinterest-p"></a>
+						<a href="#" class="fs-18 color1 p-r-20 fa fa-snapchat-ghost"></a>
+						<a href="#" class="fs-18 color1 p-r-20 fa fa-youtube-play"></a>
+					</div>
+				</div>
+			</div>
+
+			<div class="w-size7 p-t-30 p-l-15 p-r-15 respon4">
+				<h4 class="s-text12 p-b-30">
+					Categories
+				</h4>
+
+				<ul>
+					<li class="p-b-9">
+						<a href="#" class="s-text7">
+							Men
+						</a>
+					</li>
+
+					<li class="p-b-9">
+						<a href="#" class="s-text7">
+							Women
+						</a>
+					</li>
+
+					<li class="p-b-9">
+						<a href="#" class="s-text7">
+							Dresses
+						</a>
+					</li>
+
+					<li class="p-b-9">
+						<a href="#" class="s-text7">
+							Sunglasses
+						</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="w-size7 p-t-30 p-l-15 p-r-15 respon4">
+				<h4 class="s-text12 p-b-30">
+					Links
+				</h4>
+
+				<ul>
+					<li class="p-b-9">
+						<a href="#" class="s-text7">
+							Search
+						</a>
+					</li>
+
+					<li class="p-b-9">
+						<a href="#" class="s-text7">
+							About Us
+						</a>
+					</li>
+
+					<li class="p-b-9">
+						<a href="#" class="s-text7">
+							Contact Us
+						</a>
+					</li>
+
+					<li class="p-b-9">
+						<a href="#" class="s-text7">
+							Returns
+						</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="w-size7 p-t-30 p-l-15 p-r-15 respon4">
+				<h4 class="s-text12 p-b-30">
+					Help
+				</h4>
+
+				<ul>
+					<li class="p-b-9">
+						<a href="#" class="s-text7">
+							Track Order
+						</a>
+					</li>
+
+					<li class="p-b-9">
+						<a href="#" class="s-text7">
+							Returns
+						</a>
+					</li>
+
+					<li class="p-b-9">
+						<a href="#" class="s-text7">
+							Shipping
+						</a>
+					</li>
+
+					<li class="p-b-9">
+						<a href="#" class="s-text7">
+							FAQs
+						</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="w-size8 p-t-30 p-l-15 p-r-15 respon3">
+				<h4 class="s-text12 p-b-30">
+					Newsletter
+				</h4>
+
+				<form>
+					<div class="effect1 w-size9">
+						<input class="s-text7 bg6 w-full p-b-5" type="text" name="email" placeholder="email@example.com">
+						<span class="effect1-line"></span>
+					</div>
+
+					<div class="w-size2 p-t-20">
+						<!-- Button -->
+						<button class="flex-c-m size2 bg4 bo-rad-23 hov1 m-text3 trans-0-4">
+							Subscribe
+						</button>
+					</div>
+
+				</form>
+			</div>
+		</div>
+
+		<div class="t-center p-l-15 p-r-15">
+			<a href="#">
+				<img class="h-size2" src="/user_asset/images/icons/paypal.png" alt="IMG-PAYPAL">
+			</a>
+
+			<a href="#">
+				<img class="h-size2" src="/user_asset/images/icons/visa.png" alt="IMG-VISA">
+			</a>
+
+			<a href="#">
+				<img class="h-size2" src="/user_asset/images/icons/mastercard.png" alt="IMG-MASTERCARD">
+			</a>
+
+			<a href="#">
+				<img class="h-size2" src="/user_asset/images/icons/express.png" alt="IMG-EXPRESS">
+			</a>
+
+			<a href="#">
+				<img class="h-size2" src="/user_asset/images/icons/discover.png" alt="IMG-DISCOVER">
+			</a>
+
+			<div class="t-center s-text8 p-t-20">
+				Copyright © 2018 All rights reserved. | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+			</div>
+		</div>
+    </footer>
+
+
+
+
+	<!-- Back to top -->
+	<div class="btn-back-to-top bg0-hov" id="myBtn">
+		<span class="symbol-btn-back-to-top">
+			<i class="fa fa-angle-double-up" aria-hidden="true"></i>
+		</span>
+	</div>
+
+	<!-- Container Selection1 -->
+	<div id="dropDownSelect1"></div>
+	<div id="dropDownSelect2"></div>
+
+
+
+
+<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/bootstrap/js/popper.js"></script>
+	<script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/select2/select2.min.js"></script>
+	<script type="text/javascript">
+		$(".selection-1").select2({
+			minimumResultsForSearch: 20,
+			dropdownParent: $('#dropDownSelect1')
+		});
+
+		$(".selection-2").select2({
+			minimumResultsForSearch: 20,
+			dropdownParent: $('#dropDownSelect2')
+		});
+	</script>
+<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/slick/slick.min.js"></script>
+	<script type="text/javascript" src="js/slick-custom.js"></script>
+<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/sweetalert/sweetalert.min.js"></script>
+	<script type="text/javascript">
+		$('.block2-btn-addcart').each(function(){
+			var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
+			$(this).on('click', function(){
+				// swal(nameProduct, "Added to cart !", "success");
+			});
+		});
+
+		$('.block2-btn-addwishlist').each(function(){
+			var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
+			$(this).on('click', function(){
+				// swal(nameProduct, "is added to wishlist !", "success");
+			});
+		});
+
+		$('.btn-addcart-product-detail').each(function(){
+			var nameProduct = $('.product-detail-name').html();
+			$(this).on('click', function(){
+				// swal(nameProduct, "is added to wishlist !", "success");
+			});
+		});
+	</script>
+
+<!--===============================================================================================-->
+	<script src="js/main.js"></script>
+
 </body>
-
 </html>

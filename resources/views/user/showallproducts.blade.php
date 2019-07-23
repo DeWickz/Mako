@@ -6,8 +6,8 @@
 
     <div class="container">
         <div class="row">
-            <div class="w-size14 p-t-30 respon5">
-                <div class="pl-2 pl-4"><h4 class="product-detail-name m-text16 p-b-13">
+            <div class="col-sm-6 col-md-4 col-lg-3 p-b-50">
+                <div class="pl-2"><h4 class="product-detail-name m-text16 p-b-13">
                     All products
                 </h4></div>
 

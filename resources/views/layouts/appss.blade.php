@@ -150,7 +150,12 @@
                                             <img src="/user_asset/images/icons/icon-header-03.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
 
                                             <ul class="sub_menu">
-                                                <li><a href="adminhome">
+                                                <li><a href={{route('profile.userinfo')}}>
+                                                    @foreach($user_detail as $user)
+                                                    {{$user->user_firstname}}'s  Profile
+                                                    @endforeach
+                                                </a></li>
+                                                <li><a href="{{route('adminhome')}}">
                                                     Admin Dashboard
                                                 </a></li>
                                                 <li><a class="dropdown-item" href="{{ route('logout') }}"
@@ -176,7 +181,7 @@
                                                 <img src="/user_asset/images/icons/icon-header-03.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
 
                                                 <ul class="sub_menu">
-                                                    <li><a href="profile">
+                                                    <li><a href="{{route('profile.userinfo')}}">
                                                         Profile
                                                     </a></li>
                                                     <li><a class="dropdown-item" href="{{ route('logout') }}"
@@ -201,8 +206,7 @@
                         <div class="header-wrapicon2">
 
                             <img src="/user_asset/images/icons/icon-header-02.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
-                                <span class="header-icons-noti">{{Session::has('cart') ?
-                                Session::get('cart')->totalQty : ''}}
+                                <span class="header-icons-noti"> {{Cart::count()}}
                                 </span>
 
 
@@ -283,130 +287,164 @@
                 </div>
             </div>
 
-            <!-- Header Mobile -->
-            <div class="wrap_header_mobile">
-                <!-- Logo moblie -->
-                <a href="index.html" class="logo-mobile">
-                    <img src="/user_asset/images/icons/mokaLogo3.png" alt="IMG-LOGO">
-                </a>
+           <!-- Header Mobile -->
+		<div class="wrap_header_mobile">
+			<!-- Logo moblie -->
+			<a href="/" class="logo-mobile">
+                <img src="/user_asset/images/icons/mokaLogo3.png" alt="IMG-LOGO">
+			</a>
 
-                <!-- Button show menu -->
-                <div class="btn-show-menu">
-                    <!-- Header Icon mobile -->
-                    <div class="header-icons-mobile">
-                        <a href="{{ route('login') }}" class="header-wrapicon1 dis-block">
-                            Login{{-- <img src="/user_asset/images/icons/icon-header-01.png" class="header-icon1" alt="ICON"> --}}
-                        </a>
+			<!-- Button show menu -->
+			<div class="btn-show-menu">
 
-                        <span class="linedivide2"></span>
 
-                        <div class="header-wrapicon2">
-                            <img src="/user_asset/images/icons/icon-header-02.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
-                            <span class="header-icons-noti">0</span>
+                <!-- Header Icon mobile -->
 
-                            <!-- Header cart noti -->
-                            <div class="header-cart header-dropdown">
-                                <ul class="header-cart-wrapitem">
+                <div class="header-icons-mobile">
+                 @guest
+                        @if (Route::has('login'))
+                        <div class="wrap_menu pt-1">
+                                <nav class="menu">
+                                    <ul class="main_menu">
+                                        <li>
+                                            <img src="/user_asset/images/icons/icon-header-01.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
+
+                                            <ul class="sub_menu">
+                                                <li><a href="{{ route('login') }}">
+                                                    Login{{-- <img src="/user_asset/images/icons/icon-header-01.png" class="header-icon1" alt="ICON"> --}}
+                                                </a>
+                                                </li>
+                                                <li><a href="{{ route('register') }}">
+                                                    Register
+                                                </a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                    @endguest
+                        @else
+                            @role('admin')
+                            <div class="wrap_menu pt-1">
+                                <nav class="menu">
+                                    <ul class="main_menu">
+                                        <li>
+                                            <img src="/user_asset/images/icons/icon-header-03.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
+
+                                            <ul class="sub_menu">
+                                                <li><a href={{route('profile.userinfo')}}>
+                                                    @foreach($user_detail as $user)
+                                                    {{$user->user_firstname}}'s  Profile
+                                                    @endforeach
+                                                </a></li>
+                                                <li><a href="{{route('adminhome')}}">
+                                                    Admin Dashboard
+                                                </a></li>
+                                                <li><a class="dropdown-item" href="{{ route('logout') }}"
+                                                    onclick="event.preventDefault();
+                                                    document.getElementById('logout-form').submit();">
+                                                     {{ __('Logout') }}
+                                                 </a>
+
+                                                 <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                                                 @csrf
+                                                 </form></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                            @endrole
+                            @role('customer')
+                            <div class="wrap_menu pt-1">
+                                    <nav class="menu">
+                                        <ul class="main_menu">
+                                            <li>
+                                                <img src="/user_asset/images/icons/icon-header-03.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
+
+                                                <ul class="sub_menu">
+                                                    <li><a href="{{route('profile.userinfo')}}">
+                                                        Profile
+                                                    </a></li>
+                                                    <li><a class="dropdown-item" href="{{ route('logout') }}"
+                                                        onclick="event.preventDefault();
+                                                        document.getElementById('logout-form').submit();">
+                                                         {{ __('Logout') }}
+                                                     </a>
+
+                                                     <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                                                     @csrf
+                                                     </form></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            @endrole
+                        @endif
+
+                <span class="linedivide2"></span>
+
+                <div class="header-wrapicon2">
+
+                    <img src="/user_asset/images/icons/icon-header-02.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
+                        <span class="header-icons-noti"> {{Cart::count()}}
+                        </span>
+
+
+
+						<!-- Header cart noti -->
+						<div class="header-cart header-dropdown">
+							<ul class="header-cart-wrapitem">
+
+                            @if(Cart::count()==0)
                                     <li class="header-cart-item">
-                                        <div class="header-cart-item-img">
+                                        <h1>No items in cart</h1>
+                                    </li>
+
+                            @else
+                            @foreach(Cart::content() as $product)
+
+								<li class="header-cart-item">
+                                <div class="header-cart-item-img">
                                             <img src="/user_asset/images/item-cart-01.jpg" alt="IMG">
                                         </div>
 
                                         <div class="header-cart-item-txt">
-                                            <a href="#" class="header-cart-item-name">
-                                                White Shirt With Pleat Detail Back
+                                            <a href="{{ route('productsWelcome2.show', $product->id) }}"  class="header-cart-item-name">
+                                                {{$product->name}}
                                             </a>
 
                                             <span class="header-cart-item-info">
-                                                1 x $19.00
+                                        ‎        ฿ {{$product->price}} x {{$product->qty}}
                                             </span>
                                         </div>
                                     </li>
-
-                                    <li class="header-cart-item">
-                                        <div class="header-cart-item-img">
-                                            <img src="/user_asset/images/item-cart-02.jpg" alt="IMG">
-                                        </div>
-
-                                        <div class="header-cart-item-txt">
-                                            <a href="#" class="header-cart-item-name">
-                                                Converse All Star Hi Black Canvas
-                                            </a>
-
-                                            <span class="header-cart-item-info">
-                                                1 x $39.00
-                                            </span>
-                                        </div>
-                                    </li>
-
-                                    <li class="header-cart-item">
-                                        <div class="header-cart-item-img">
-                                            <img src="/user_asset/images/item-cart-03.jpg" alt="IMG">
-                                        </div>
-
-                                        <div class="header-cart-item-txt">
-                                            <a href="#" class="header-cart-item-name">
-                                                Nixon Porter Leather Watch In Tan
-                                            </a>
-
-                                            <span class="header-cart-item-info">
-                                                1 x $17.00
-                                            </span>
-                                        </div>
-                                    </li>
+                                    @endforeach
                                 </ul>
 
-                                <div class="header-cart-total">
-                                    Total: $75.00
+
+                                <div class="header-cart-total align-left">
+                                    Total: ฿{{Cart::total()}}
                                 </div>
+                                @endif
+
 
                                 <div class="header-cart-buttons">
-                                    <div class="header-cart-wrapbtn">
-                                        <!-- Button -->
-                                        <a href="cart.html" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
-                                            View Cart
-                                        </a>
-                                    </div>
-
-                                    <div class="header-cart-wrapbtn">
-                                        <!-- Button -->
-                                        <a href="#" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
-                                            Check Out
-                                        </a>
-                                    </div>
+                                    <!-- Button -->
+                                    <a href="{{route('cart')}}" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+                                        View Cart
+                                    </a>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-		<!-- Menu Mobile -->
-		<div class="wrap-side-menu" >
-		<nav class="menu">
-						<ul class="main_menu">
+						</div>
+					</div>
+				</div>
 
 
-							<li>
-                                <a href="/">Home</a>
-                            </li>
-
-							<li class="sale-noti">
-                                <a href="/viewproducts">Product</a>
-                            </li>
-
-							<li>
-								<a href="/groups">Group</a>
-								<ul class="sub_menu">
-									<li><a href="#">Group V1</a></li>
-									<li><a href="#">Group V2</a></li>
-									<li><a href="#">Group V3</a></li>
-								</ul>
-							</li>
-
-						</ul>
-                    </nav>
+			</div>
 		</div>
+
+
 	</header>
 @yield('content')
 <!-- Footer -->

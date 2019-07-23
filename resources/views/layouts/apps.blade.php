@@ -36,7 +36,7 @@
       <div class="sidebar-wrapper">
         <ul class="nav">
           <li class="nav-item active  ">
-            <a class="nav-link" href="{{ route('admin.admin_dashboard.index') }}">
+            <a class="nav-link" href="{{ route('adminhome') }}">
               <i class="material-icons">dashboard</i>
               <p>Admin Dashboard</p>
             </a>
@@ -69,8 +69,8 @@
               <p>Stocks</p>
             </a>
           </li>
-
-          {{-- <li class="nav-item ">
+{{--
+          <li class="nav-item ">
             <a class="nav-link" href="{{ route('admin.carts.index') }}">
               <i class="material-icons">shopping_cart</i>
               <p>Carts</p>

@@ -447,24 +447,18 @@
 					</li>
 
 					<li class="item-menu-mobile">
-                        <a href="http://localhost:8000/showproducts">Products</a>
+                    <nav class="menu">
+                    <ul class="main_menu">
+                        <li>
+                            <a href="{{route('showproducts')}}">Products</a>
                             <ul class="sub_menu">
-                                                                <li><a href="http://localhost:8000/productsWelcome/1">
-                                    Random
-                                                                </a></li><li><a href="http://localhost:8000/productsWelcome/2">
-                                    Misc
-                                                                </a></li><li><a href="http://localhost:8000/productsWelcome/3">
-                                    Food
-                                                                </a></li><li><a href="http://localhost:8000/productsWelcome/4">
-                                    Camera
-                                                                </a></li><li><a href="http://localhost:8000/productsWelcome/5">
-                                    Numbers
-                                                                </a></li><li><a href="http://localhost:8000/productsWelcome/6">
-                                    Test
-                                                                </a></li>
+                                @foreach($groups as $group)
+                                <li><a href="{{ route('productsWelcome.show', $group->id) }}">
+                                    {{$group->group_name}}
+                                @endforeach
+                                </a></li>
                             </ul>
-						<i class="arrow-main-menu fa fa-angle-right" aria-hidden="true"></i>
-					</li>
+                        </li>
 
 					<li class="item-menu-mobile">
                         <a href="http://localhost:8000/showproducts">Shop</a>
