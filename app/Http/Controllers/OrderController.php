@@ -18,8 +18,9 @@ class OrderController extends Controller
     {
         if(auth()->user()->hasRole("admin")){
             $orders= DB::table('orders')
-            ->paginate(5);
-
+            ->join('users','orders.order_user_id','=','users.id')
+            ->paginate(10);
+            // dd($orders);
 
             return view('admin.orders.index',compact('orders'));
         }
@@ -27,11 +28,6 @@ class OrderController extends Controller
         {
             return view('errors');
         }
-
-
-
-
-
 
         // $orders = Order::all();
         // return view('admin.orders.index', compact('orders'));
@@ -106,4 +102,5 @@ class OrderController extends Controller
         $order->delete();
         return redirect()->route('admin.orders.index');
     }
+
 }

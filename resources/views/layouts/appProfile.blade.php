@@ -65,6 +65,43 @@
             </a>
           </li>
 
+
+
+
+          <li class="nav-item dropdown">
+                <a class="nav-link" href="#pablo" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="material-icons">offline_pin</i>
+                  <p>สถานะการสั่งซื้อ</p>
+                </a>
+
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{{ route('profile.status.allOrders') }}">
+                      ทั้งหมด
+                   </a>
+
+                   <a class="dropdown-item" href="{{ route('profile.status.payPending') }}">
+                      อยู่ระหว่างการชำระเงิน
+                   </a>
+
+                   <a class="dropdown-item" href="{{ route('profile.status.paidOrders') }}">
+                      ชำระเงินแล้ว
+                   </a>
+
+                   <a class="dropdown-item" href="{{ route('profile.status.deliveryPending') }}">
+                      อยู่ระหว่างการจัดส่ง
+                   </a>
+
+                   <a class="dropdown-item" href="{{ route('profile.status.received') }}">
+                      สำเร็จ
+                   </a>
+
+                </div>
+              </li>
+
+
+
+
+
       </div>
     </div>
     <div class="main-panel">
@@ -107,7 +144,7 @@
                 </a>
               </li>
 
-              <li class="nav-item dropdown">
+              {{-- <li class="nav-item dropdown">
                 <a class="nav-link" href="shoppingCart" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="material-icons">shopping_cart</i>
                     <span class="notification">{{Cart::count()}}</span>
@@ -168,7 +205,7 @@
 
                     </div>
                 </div>
-              </li>
+              </li> --}}
 
               <li class="nav-item dropdown">
                 <a class="nav-link" href="#pablo" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

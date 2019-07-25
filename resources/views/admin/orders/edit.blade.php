@@ -15,11 +15,6 @@
                     <form method="POST" action="{{ route('admin.orders.update', $order->id)}}">
                         {{method_field('PUT')}}
                         @csrf
-
-                        Order name:
-
-                        <input type="text" name="order_name" value="{{$order->order_name}}" class="form-control"/>
-
                         Order code:
 
                         <input type="text" name="order_code" value="{{$order->order_code}}" class="form-control"/>
@@ -32,9 +27,14 @@
 
                         <input type="text" name="order_user_id" value="{{$order->order_user_id}}" class="form-control"/>
 
+                        Order status:
+
+                        <input type="text" name="order_status" value="{{$order->order_status}}" class="form-control"/>
+
                         Order PaymentMethod:
 
                         <input type="text" name="order_PaymentMethod" value="{{$order->order_PaymentMethod}}" class="form-control"/>
+
 
                         <br/>
                         <br/>

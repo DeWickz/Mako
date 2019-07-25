@@ -22,6 +22,7 @@
         <tr>
             <th width = 400 class="font-weight-bold">Product Name</th>
             <th width = 400 class="font-weight-bold">Quantity</th>
+            {{-- <th width = 400 class="font-weight-bold">Actions</th> --}}
         </tr>
     </thead>
         @foreach(Cart::content() as $product)

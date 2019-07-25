@@ -350,23 +350,6 @@ class ProductController extends Controller
 
     public function checkout()
     {
-        if (!Session::has('cart')){
-            $groups = Group::all();
-            $user_id = Auth::id();
-
-            $user_detail = DB::table('users')
-            ->where('id','=',$user_id)
-            ->get();
-            return view('shoppingCart',compact('groups','user_detail'));
-        }
-        $oldCart = Session::get('cart');
-        $cart = new Cart($oldCart);
-        $products = $cart->items;
-        $total = [0];
-        foreach($products as $product)
-        {
-            $total[0] += $product['total'];
-        }
         $groups = Group::all();
         $user_id = Auth::id();
 
@@ -380,7 +363,8 @@ class ProductController extends Controller
         $user_detail = DB::table('users')
         ->where('id','=',$user_id)
         ->get();
-        return view('checkout', compact('total','products','groups','user_detail'));
+
+        return view('checkout', compact('groups','user_detail'));
     }
 }
 

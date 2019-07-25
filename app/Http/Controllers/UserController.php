@@ -95,6 +95,9 @@ class UserController extends Controller
 
     public function profile()
     {
+        ShoppingCart::destroy();
+        ShoppingCart::restore(Auth::id());
+
         $user = DB::table('users')->get();
         $groups = DB::table('groups')->get();
 
@@ -125,6 +128,9 @@ class UserController extends Controller
     }
 
     public function userinfo(){
+        ShoppingCart::destroy();
+        ShoppingCart::restore(Auth::id());
+
         $users = User::all();
         $current_user = Auth::user();
         $groups = DB::table('groups')
@@ -153,6 +159,8 @@ class UserController extends Controller
 
     }
     public function personal(){
+        ShoppingCart::destroy();
+        ShoppingCart::restore(Auth::id());
 
         $users = User::all();
         $current_user = Auth::user();
@@ -178,6 +186,8 @@ class UserController extends Controller
 
     }
     public function addressbook(){
+        ShoppingCart::destroy();
+        ShoppingCart::restore(Auth::id());
 
         $current_user = Auth::user();
         $user_id = Auth::id();
@@ -205,6 +215,8 @@ class UserController extends Controller
 
     }
     public function payment(){
+        ShoppingCart::destroy();
+        ShoppingCart::restore(Auth::id());
 
         $users = User::all();
         $current_user = Auth::user();
@@ -232,6 +244,9 @@ class UserController extends Controller
 
     public function editPersonal(User $current_user, $id)
     {
+        ShoppingCart::destroy();
+        ShoppingCart::restore(Auth::id());
+
         $current_user = Auth::user();
         $basket = DB::table('shoppingcart')
         ->where('identifier','=',Auth::id())
@@ -255,6 +270,8 @@ class UserController extends Controller
 
     public function updatePersonal(Request $request, User $current_user)
     {
+        ShoppingCart::destroy();
+        ShoppingCart::restore(Auth::id());
 
         $current_user = Auth::user();
         $current_user->update($request->all());
@@ -296,45 +313,5 @@ class UserController extends Controller
         return  redirect()->route('profile.personal');
 
     }
-
-    public function create()
-    {
-        //
-    }
-
-
-    // public function addressStore(Request $request)
-    // {
-    //     $address = request()->validate([
-    //         'address_moo' => ['required', 'string', 'max:255'],
-    //         'address_soi' => ['required', 'string', 'max:255'],
-    //         'address_houseNo' => ['required', 'string', 'max:255'],
-    //         'address_district' => ['required', 'string', 'max:255'],
-    //         'address_province' => ['required', 'string', 'max:255'],
-    //         'address_city' => ['required', 'string', 'max:255'],
-    //         'address_state' => ['required', 'string', 'max:255'],
-    //         'address_country' => ['required', 'string', 'max:255'],
-    //         'address_postal_code' => ['required', 'string', 'max:255'],
-
-    //     ]);
-
-    //     $adr = new Address;
-    //     $adr ->address_moo = $request->input('address_moo');
-    //     $adr ->address_soi = $request->input('address_soi');
-    //     $adr ->address_houseNo = $request->input('address_houseNo');
-    //     $adr ->address_district = $request->input('address_district');
-    //     $adr ->address_province = $request->input('address_province');
-    //     $adr ->address_city = $request->input('address_city');
-    //     $adr ->address_state = $request->input('address_state');
-    //     $adr ->address_country = $request->input('address_country');
-    //     $adr ->address_postal_code = $request->input('address_postal_code');
-
-
-    //     $adr->save();
-    //     return  redirect()->route('profile.addressbook');
-
-    // }
-
-
 
 }

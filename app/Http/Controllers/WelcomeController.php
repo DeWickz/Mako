@@ -18,6 +18,7 @@ class WelcomeController extends Controller
 {
     public function index()
     {
+
         $groups = Group::all();
         $allproducts = DB::table('products')->paginate(8);
         $user_id = Auth::id();

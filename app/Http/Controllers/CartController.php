@@ -23,6 +23,9 @@ class CartController extends Controller
      */
     public function index()
     {
+        // ShoppingCart::destroy();
+        // ShoppingCart::restore(Auth::id());
+
         $user_ids = DB::table('shoppingcart')
         ->select('identifier')
         ->get();
@@ -38,11 +41,14 @@ class CartController extends Controller
 
     public function editCart($identifier)
     {
+        ShoppingCart::destroy();
+        ShoppingCart::restore($identifier);
+
         $username = DB::table('users')
         ->where('id','=',$identifier)
         ->get();
 
-        ShoppingCart::restore($identifier);
+
 
         $basket = DB::table('shoppingcart')
         ->where('identifier','=',$identifier)

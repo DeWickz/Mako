@@ -40,18 +40,7 @@ class AddressController extends Controller
      */
     public function create()
     {
-        if (!Session::has('cart')){
-            return view('profile.address.addaddress');
-        }
-        $oldCart = Session::get('cart');
-        $cart = new Cart($oldCart);
-        $products = $cart->items;
-        $total = [0];
-        foreach($products as $product)
-        {
-            $total[0] += $product['total'];
-        }
-        return view('profile.address.addAddress',compact('products','total'));
+        return view('profile.address.addAddress');
     }
 
     /**

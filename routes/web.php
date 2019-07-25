@@ -12,7 +12,7 @@ use App\Http\Controllers\AdminController;
 |
 */
 
-Route::get('/', 'WelcomeController@index');
+Route::get('/', 'WelcomeController@index')->name('welcome');
 Auth::routes();
 
 Route::get('/home', 'AdminController@dashboard')->name('home');
@@ -39,7 +39,7 @@ Route::get('/addtocart/{id}', 'ProductController@addtocart')->name('addtocart');
 Route::get('/addtocart2/{id}', 'ProductController@addtocart2')->name('addtocarttoshop');
 Route::get('/profile', 'UserController@profile')->name('profile');
 Route::get('/shoppingCart', 'ProductController@cart')->name('shoppingCart');
-Route::get('/checkout', 'ProductController@checkout')->name('checkout');
+
 Route::get('/reduce/{id}', 'ProductController@reducebyone')->name('reducebyone');
 Route::get('/remove/{id}', 'ProductController@removeitem')->name('removeitem');
 
@@ -50,6 +50,9 @@ Route::get('/cart/delete/{id}', 'CartItemController@cart_delete')->name('cart.de
 Route::get('/cart/incr/{id}/{qty}', 'CartItemController@incr')->name('cart.incr');
 Route::get('/cart/decr/{id}/{qty}', 'CartItemController@decr')->name('cart.decr');
 Route::get('/updateCart', 'CartItemController@upd')->name('updateCart');
+Route::get('/checkout', 'CartItemController@checkout')->name('checkout');
+Route::get('/purchase', 'CartItemController@purchase')->name('purchase');
+
 
 Route::get('/editCart/{id}', 'CartController@editCart')->name('editCart');
 
@@ -69,8 +72,18 @@ Route::get('/addressbook', 'UserController@addressbook')->name('profile.addressb
 Route::get('/payment', 'UserController@payment')->name('profile.payment');
 Route::get('/editPersonal/{id}', 'UserController@editPersonal')->name('profile.editPersonal');
 Route::get('/updatePersonal', 'UserController@updatePersonal')->name('profile.updatePersonal');
+Route::get('/purchaseStatus','UserController@purchaseStatus')->name('profile.purchase');
 
 Route::get('export', 'AdminController@export')->name('export');
+
+Route::get('/status', 'UserController@status')->name('profile.status');
+
+Route::get('/allOrders','StatusController@allOrders')->name('profile.status.allOrders');
+Route::get('/payPending','StatusController@payPending')->name('profile.status.payPending');
+Route::get('/paidOrders','StatusController@paidOrders')->name('profile.status.paidOrders');
+Route::get('/deliveryPending','StatusController@deliveryPending')->name('profile.status.deliveryPending');
+Route::get('/received','StatusController@received')->name('profile.status.received');
+Route::get('/viewOrder/{id}','StatusController@viewOrder')->name('profile.viewOrder');
 
 Route::get('/addAddress', 'AddressController@create');
 Route::post('/addAddress', 'AddressController@create')->name('profile.addAddress');
