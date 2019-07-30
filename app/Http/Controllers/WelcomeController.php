@@ -18,6 +18,8 @@ class WelcomeController extends Controller
 {
     public function index()
     {
+        ShoppingCart::destroy();
+        ShoppingCart::restore(Auth::id());
 
         $groups = Group::all();
         $allproducts = DB::table('products')->paginate(8);

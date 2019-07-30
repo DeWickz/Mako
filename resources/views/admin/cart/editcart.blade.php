@@ -22,16 +22,16 @@
         <tr>
             <th width = 400 class="font-weight-bold">Product Name</th>
             <th width = 400 class="font-weight-bold">Quantity</th>
-            {{-- <th width = 400 class="font-weight-bold">Actions</th> --}}
+            <th width = 400 class="font-weight-bold">Actions</th>
         </tr>
     </thead>
-        @foreach(Cart::content() as $product)
+        @foreach($editing as $product)
         <tr>
             <td>{{$product->name}}</td>
             <td>{{$product->qty}}</td>
-            {{-- <td>
-                <a type="button" class="btn btn-secondary" href="{{route('cart.delete', ['id' => $product->rowId])}}">Remove</a>
-            </td> --}}
+            <td>
+                <a type="button" class="btn btn-secondary" href="{{route('itemDel', ['rowid' => $product->rowId])}}">Remove</a>
+            </td>
         </tr>
         @endforeach
     </tbody>

@@ -82,11 +82,11 @@
                         <li>
                             <a href="showproducts">Products</a>
                             <ul class="sub_menu">
-                                {{-- @foreach($groups as $group)
+                                @foreach(\App\Group::all() as $group)
                                 <li><a href="{{ route('productsWelcome.show', $group->id) }}">
                                     {{$group->group_name}}
                                 @endforeach
-                                </a></li> --}}
+                                </a></li>
                             </ul>
                         </li>
 

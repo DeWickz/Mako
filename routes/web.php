@@ -55,6 +55,7 @@ Route::get('/purchase', 'CartItemController@purchase')->name('purchase');
 
 
 Route::get('/editCart/{id}', 'CartController@editCart')->name('editCart');
+Route::get('/delete/{rowid}', 'CartController@itemDel')->name('itemDel');
 
 Route::get('/usertest',function()
 {
