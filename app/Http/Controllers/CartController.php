@@ -36,11 +36,11 @@ class CartController extends Controller
         ->select('users.user_firstname','users.user_lastname','shoppingcart.identifier')
         ->get();
 
+        $current_user = Auth::user();
+
         $basket = DB::table('shoppingcart')
         ->where('identifier','=',Auth::id())
         ->get();
-
-        $current_user = Auth::user();
 
         if($basket->isEmpty())
         {

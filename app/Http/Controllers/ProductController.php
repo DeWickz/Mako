@@ -12,7 +12,8 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Gloudemans\Shoppingcart\Contracts\Buyable;
+use Gloudemans\Shoppingcart\Facades\Cart as ShoppingCart;
+
 
 class ProductController extends Controller
 {
@@ -23,17 +24,32 @@ class ProductController extends Controller
      */
     public function index()
     {
-        if(auth()->user()->hasRole("admin")){
+        ShoppingCart::destroy();
+        ShoppingCart::restore(Auth::id());
+
+        $basket = DB::table('shoppingcart')
+        ->where('identifier','=',Auth::id())
+        ->get();
+
+        if($basket->isEmpty())
+        {
             $products= DB::table('products')
             ->paginate(4);
-
-
+            ShoppingCart::store(Auth::id());
+            // dd('1');
             return view('admin.products.index',compact('products'));
         }
         else
         {
-            return view('home');
+            $products= DB::table('products')
+            ->paginate(4);
+            DB::table('shoppingcart')
+            ->where('identifier', '=', Auth::id())->delete();
+            ShoppingCart::store(Auth::id());
+
+            return view('admin.products.index',compact('products'));
         }
+
 
         // $products = Product::all();
         // return view('admin.products.index',compact('products'));

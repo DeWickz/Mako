@@ -57,9 +57,9 @@
           @endrole
           {{-- @role('customer') --}}
 
-          <form method="POST" action="{{ route('admin.products.store',$product->id) }}">
+          {{-- <form method="POST" action="{{ route('admin.products.store',$product->id) }}">
             <input type="submit" value="Bug" onclick="return confirm(' ')" class="btn btn-facebook"/>
-          </form>
+          </form> --}}
 
           {{-- @endrole --}}
           </td>

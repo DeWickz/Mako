@@ -8,6 +8,8 @@ use DB;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Gloudemans\Shoppingcart\Facades\Cart as ShoppingCart;
+use Auth;
 
 
 class GroupController extends Controller
@@ -19,18 +21,31 @@ class GroupController extends Controller
      */
     public function index()
     {
-        if(auth()->user()->hasRole("admin")){
+        ShoppingCart::destroy();
+        ShoppingCart::restore(Auth::id());
+
+        $basket = DB::table('shoppingcart')
+        ->where('identifier','=',Auth::id())
+        ->get();
+
+        if($basket->isEmpty())
+        {
             $groups= DB::table('groups')
             ->paginate(5);
-
+            ShoppingCart::store(Auth::id());
+            // dd('1');
             return view('admin.groups.index',compact('groups'));
         }
         else
         {
-            return view('errors');
+            $groups= DB::table('groups')
+            ->paginate(5);
+            DB::table('shoppingcart')
+            ->where('identifier', '=', Auth::id())->delete();
+            ShoppingCart::store(Auth::id());
+
+            return view('admin.groups.index',compact('groups'));
         }
-
-
 
         // $groups = Group::all();
         // return view('admin.groups.index', compact('groups'));
