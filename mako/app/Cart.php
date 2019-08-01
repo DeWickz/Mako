@@ -58,7 +58,6 @@ class Cart
         $this->totalQty-= $this->items[$id]['qty'];
         $this->totalPrice -= $this->items[$id]['total'];
         unset($this->items[$id]);
-
     }
 }
 //the relationships (keep for now)

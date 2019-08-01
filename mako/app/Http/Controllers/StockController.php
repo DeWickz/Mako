@@ -6,7 +6,8 @@ use App\Stock;
 use App\User;
 use Illuminate\Http\Request;
 use DB;
-
+use Gloudemans\Shoppingcart\Facades\Cart as ShoppingCart;
+use Auth;
 
 class StockController extends Controller
 {
@@ -17,20 +18,31 @@ class StockController extends Controller
      */
     public function index()
     {
-        if(auth()->user()->hasRole("admin")){
+        ShoppingCart::destroy();
+        ShoppingCart::restore(Auth::id());
+
+        $basket = DB::table('shoppingcart')
+        ->where('identifier','=',Auth::id())
+        ->get();
+
+        if($basket->isEmpty())
+        {
             $stocks= DB::table('stocks')
             ->paginate(5);
-
-
+            ShoppingCart::store(Auth::id());
+            // dd('1');
             return view('admin.stocks.index',compact('stocks'));
         }
         else
         {
-            return view('errors');
+            $stocks= DB::table('stocks')
+            ->paginate(5);
+            DB::table('shoppingcart')
+            ->where('identifier', '=', Auth::id())->delete();
+            ShoppingCart::store(Auth::id());
+
+            return view('admin.stocks.index',compact('stocks'));
         }
-
-
-
 
         // $stocks = stock::all();
         // return view('admin.stocks.index', compact('stocks'));

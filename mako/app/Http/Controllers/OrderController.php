@@ -6,6 +6,8 @@ use App\Order;
 use App\User;
 use Illuminate\Http\Request;
 use DB;
+use Auth;
+use Gloudemans\Shoppingcart\Facades\Cart as ShoppingCart;
 
 class OrderController extends Controller
 {
@@ -16,23 +18,37 @@ class OrderController extends Controller
      */
     public function index()
     {
-        if(auth()->user()->hasRole("admin")){
+        ShoppingCart::destroy();
+        ShoppingCart::restore(Auth::id());
+
+        $basket = DB::table('shoppingcart')
+        ->where('identifier','=',Auth::id())
+        ->get();
+
+        if($basket->isEmpty())
+        {
             $orders= DB::table('orders')
-            ->paginate(5);
-
-
+            ->join('users','orders.order_user_id','=','users.id')
+            ->select('users.id','orders.order_user_id','orders.order_code','orders.order_date','users.user_firstname','users.user_lastname','orders.order_status','orders.order_PaymentMethod','orders.id')
+            ->paginate(10);
+            ShoppingCart::store(Auth::id());
+            // dd('1');
+            // dd($orders);
             return view('admin.orders.index',compact('orders'));
         }
         else
         {
-            return view('errors');
+            $orders= DB::table('orders')
+            ->join('users','orders.order_user_id','=','users.id')
+            ->select('users.id','orders.order_user_id','orders.order_code','orders.order_date','users.user_firstname','users.user_lastname','orders.order_status','orders.order_PaymentMethod','orders.id')
+            ->paginate(10);
+            DB::table('shoppingcart')
+            ->where('identifier', '=', Auth::id())->delete();
+            ShoppingCart::store(Auth::id());
+            // dd($orders);
+
+            return view('admin.orders.index',compact('orders'));
         }
-
-
-
-
-
-
         // $orders = Order::all();
         // return view('admin.orders.index', compact('orders'));
 
@@ -106,4 +122,5 @@ class OrderController extends Controller
         $order->delete();
         return redirect()->route('admin.orders.index');
     }
+
 }

@@ -10,6 +10,7 @@ use App\Product;
 use App\Cart;
 use App\Http\Controllers\Controller;
 use Auth;
+use Gloudemans\Shoppingcart\Facades\Cart as ShoppingCart;
 // use App\Product;
 
 
@@ -17,28 +18,6 @@ class WelcomeController extends Controller
 {
     public function index()
     {
-        if (!Session::has('cart')){
-            $groups = Group::all();
-            $products = DB::table('products')->paginate(8);
-            $allproducts = DB::table('products')->paginate(8);
-            $user_id = Auth::id();
-            $user_detail = DB::table('users')
-            ->where('id','=',$user_id)
-            ->get();
-
-            return view('welcome', compact('products','groups','user_detail','allproducts'));
-        }
-        $oldCart = Session::get('cart');
-        $cart = new Cart($oldCart);
-        $products = $cart->items;
-        $totalPrice = $cart->totalPrice;
-        $total = [0];
-
-        foreach($products as $product)
-        {
-            $total[0] += $product['total'];
-        }
-
         $groups = Group::all();
         $allproducts = DB::table('products')->paginate(8);
         $user_id = Auth::id();
@@ -46,10 +25,43 @@ class WelcomeController extends Controller
         ->where('id','=',$user_id)
         ->get();
 
-        // dd($cart);
+        $basket = DB::table('shoppingcart')
+        ->where('identifier','=',Auth::id())
+        ->get();
 
-        return view('welcome',compact('products','allproducts','groups','user_detail',
-                                      'totalPrice','total'));
+        if(Auth::guest())
+        {
+            if($basket->isEmpty())
+            {
+                return view('welcome',compact('groups','user_detail',
+                                        'allproducts'));
+            }
+            else
+            {
+                return view('welcome',compact('groups','user_detail',
+                                        'allproducts'));
+            }
+        }
+        else
+        {
+            if($basket->isEmpty())
+            {
+                ShoppingCart::store(Auth::id());
+                return view('welcome',compact('groups','user_detail',
+                                        'allproducts'));
+            }
+            else
+            {
+                DB::table('shoppingcart')
+                ->where('identifier', '=', Auth::id())->delete();
+                ShoppingCart::store(Auth::id());
+                return view('welcome',compact('groups','user_detail',
+                           'allproducts'));
+            }
+        }
+
+
+        // dd($cart);
     }
 
     public function cart()
@@ -72,9 +84,9 @@ class WelcomeController extends Controller
         return view('shoppingCart', compact('products','totalPrice','groups','total'));
     }
 }
-  // $groups = Group::all();
+  // $groups = Groupd::all();
         // if(auth()->user()->hasRole("admin")){
-        //     $products= DB::table('products')
+        //     $proucts= DB::table('products')
         //     ->paginate(8);
 
 
